@@ -8,6 +8,8 @@ class WebClient implements ProfileRepository{
       header: HeaderEntity(
           name: 'David Rahman',
           summary: 'Project Manager\n(Construction, Infrastructure)',
+          country: 'Indonesia',
+          region: 'Jakarta',
           avatarUrl: 'https://media-exp1.licdn.com/dms/image/C4E03AQEcQGn1OLMJhQ/profile-displayphoto-shrink_800_800/0?e=1610582400&v=beta&t=AEfJrWhUCr3fHHDfz-DecwjhR0TPBM4nnjCUWFFeOQM',
           backgroundUrl: 'https://images.unsplash.com/photo-1559959656-9bcf78455c5e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
       ),
@@ -18,6 +20,8 @@ class WebClient implements ProfileRepository{
         ShowcaseEntity(url: 'https://images.unsplash.com/photo-1563166423-482a8c14b2d6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'),
         ShowcaseEntity(url: 'https://images.unsplash.com/photo-1530639834082-05bafb67fbbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'),
       ],
+      about: AboutEntity(about:  "Certified Project Management Professional (IAPM®), with more than 15 years of experience in oil and gas infrastructure projects.\n" +
+          "Looking forward to apply my knowledge and experience in project management and learn new techniques."),
       experiences: [
         new ExperienceEntity(
             id: 0,
