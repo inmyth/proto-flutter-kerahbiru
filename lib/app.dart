@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/routes.dart';
+import 'package:proto_flutter_kerahbiru/screens/certificate_screen.dart';
 import 'package:proto_flutter_kerahbiru/screens/profile_screen.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_repository.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +17,12 @@ final ProfileRepository profileRepository;
       create: (_) => ProfileState(repository: profileRepository)..loadProfile(),
       child: MaterialApp(
         routes: {
-          Routes.profile: (context) => ProfileScreen()
+          Routes.profile: (context) => ProfileScreen(),
+          Routes.certificate: (context) => CertificateScreen()
         },
 
       )
 
     );
   }
-
-
 }

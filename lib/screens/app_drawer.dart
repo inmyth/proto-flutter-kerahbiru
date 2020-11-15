@@ -20,11 +20,11 @@ class AppDrawer extends StatelessWidget {
               text: 'Resume',
               onTap: () =>
               currentPage == Routes.profile ? null : Navigator.pushReplacementNamed(context, Routes.profile)),
-          // _createDrawerItem(
-          //     icon: Icons.article_outlined,
-          //     text: 'Certificate',
-          //     onTap: () =>
-          //     currentPage == Routes.certificate ? null : Navigator.pushReplacementNamed(context, Routes.certificate)),
+          _createDrawerItem(
+              icon: Icons.article_outlined,
+              text: 'Certificate',
+              onTap: () =>
+              currentPage == Routes.certificate ? null : Navigator.pushReplacementNamed(context, Routes.certificate)),
           // _createDrawerItem(
           //     icon: Icons.account_box,
           //     text: 'Resume (old)',

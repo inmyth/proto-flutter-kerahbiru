@@ -4,6 +4,7 @@ import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/app_drawer.dart';
 import 'package:provider/provider.dart';
+import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
 // import 'package:flutter_app/modules/AddItemOnly.dart';
 // import 'package:flutter_app/widget/AppDrawer.dart';
@@ -445,20 +446,7 @@ class _CertificationItem extends StatelessWidget{
   final Certification item;
 
   const _CertificationItem({this.item});
-
-  // Future<void> _launchInBrowser(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(
-  //       url,
-  //       forceSafariVC: false,
-  //       forceWebView: false,
-  //       headers: <String, String>{'my_header_key': 'my_header_value'},
-  //     );
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -483,7 +471,7 @@ class _CertificationItem extends StatelessWidget{
 
             ),
             onTap: (){
-              // launchInBrowser(link);
+              launchInBrowser(item.url);
             },
           ),
           SizedBox(
