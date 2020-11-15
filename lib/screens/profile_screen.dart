@@ -3,12 +3,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/app_drawer.dart';
+import 'package:proto_flutter_kerahbiru/screens/experience_edit_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
-
-// import 'package:flutter_app/modules/AddItemOnly.dart';
-// import 'package:flutter_app/widget/AppDrawer.dart';
-// import 'package:flutter_app/helper/Helper.dart';
 
 class ProfileScreen extends StatelessWidget {
 
@@ -339,18 +336,18 @@ class _Experience extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.add),
                       tooltip: 'Add experience',
-                      // onPressed: () {
-                      //   if(this.isAddable){
-                      //     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      //       return AddItemOnly();
-                      //     }));
-                      //   }
-                      //   else{
-                      //     Scaffold.of(context).showSnackBar(
-                      //         SnackBar(content: Text('Lagi dibuat')));
-                      //   }
-                      //
-                      // },
+                      onPressed: () {
+                        if(this.isAddable){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) {
+                            return ExperienceEditScreen(expList: list,);
+                          }));
+                        }
+                        else{
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text('Lagi dibuat')));
+                        }
+
+                      },
                     ),
                   ),
                 ]
@@ -446,7 +443,7 @@ class _CertificationItem extends StatelessWidget{
   final Certification item;
 
   const _CertificationItem({this.item});
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
