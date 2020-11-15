@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 class ProfileEntity {
   final String id;
   final HeaderEntity header;
-  final List<ShowcaseEntity> showcase;
+  final List<ShowcaseEntity> showcases;
   final List<ExperienceEntity> experiences;
   final List<ProjectEntity> projects;
   final List<CertificationEntity> certifications;
   final List<EducationEntity> educations;
 
-  ProfileEntity({@required this.id, this.header, this.showcase, this.experiences, this.projects, this.certifications, this.educations});
+  ProfileEntity({@required this.id, this.header, this.showcases, this.experiences, this.projects, this.certifications, this.educations});
 }
 
 class HeaderEntity {

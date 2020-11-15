@@ -11,3 +11,5 @@
 ## Todo
 - new user registration
     - could use stepper
+- theme
+- locale

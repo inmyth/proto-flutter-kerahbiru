@@ -5,18 +5,19 @@ import 'package:proto_flutter_kerahbiru/services/profile_repository.dart';
 class ProfileState extends ChangeNotifier {
   final ProfileRepository repository;
 
-  Profile profile;
+  Profile _profile;
 
   bool _isLoading = false;
 
-  ProfileState({this.repository, this.profile});
+
+  ProfileState({this.repository});
 
   Future loadProfile() {
     _isLoading = true;
     notifyListeners();
 
     return repository.loadProfile().then((repoProfile) {
-      profile = Profile.fromEntity(repoProfile);
+      _profile = Profile.fromEntity(repoProfile);
       _isLoading = false;
       notifyListeners();
     }).catchError((err) {
@@ -24,4 +25,10 @@ class ProfileState extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  bool get isLoading => _isLoading;
+
+  Profile get profile => _profile;
+
+
 }

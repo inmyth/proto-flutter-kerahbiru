@@ -4,23 +4,23 @@ import 'package:proto_flutter_kerahbiru/services/profile_entity.dart';
 class Profile {
   final String id;
   final Header header;
-  final List<Showcase> showcase;
+  final List<Showcase> showcases;
   final List<Experience> experiences;
   final List<Project> projects;
   final List<Certification> certifications;
   final List<Education> educations;
 
-  Profile({@required this.id, this.header, this.showcase, this.experiences, this.projects, this.certifications, this.educations});
+  Profile({@required this.id, this.header, this.showcases, this.experiences, this.projects, this.certifications, this.educations});
 
   static Profile fromEntity(ProfileEntity entity) {
     return Profile(
       id: entity.id,
-      showcase: entity.showcase.map(Showcase.fromEntity),
+      showcases: entity.showcases.map(Showcase.fromEntity).toList(),
       header: Header.fromEntity(entity.header),
-      experiences: entity.experiences.map(Experience.fromEntity),
-      projects: entity.projects.map(Project.fromEntity),
-      certifications: entity.certifications.map(Certification.fromEntity),
-      educations: entity.educations.map(Education.fromEntity),
+      experiences: entity.experiences.map(Experience.fromEntity).toList(),
+      projects: entity.projects.map(Project.fromEntity).toList(),
+      certifications: entity.certifications.map(Certification.fromEntity).toList(),
+      educations: entity.educations.map(Education.fromEntity).toList(),
     );
   }
 }
