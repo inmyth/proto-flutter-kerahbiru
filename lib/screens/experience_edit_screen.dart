@@ -47,7 +47,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
     );
   }
 
-  void removeItem(int index) {
+  void _removeItem(int index) {
     setState(() {
       _expList.removeAt(index);
     });
@@ -62,7 +62,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
                   item: this._expList[position],
                   onDelete: () {
                     Provider.of<ProfileState>(context, listen: false).deleteExperience(_profileId, this._expList[position].id);
-                    removeItem(position);
+                    _removeItem(position);
                   });
             })
         : Column(
