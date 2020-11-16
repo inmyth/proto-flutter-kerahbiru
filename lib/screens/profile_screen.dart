@@ -339,7 +339,7 @@ class _Experience extends StatelessWidget {
                       onPressed: () {
                         if(this.isAddable){
                           Navigator.push(context, MaterialPageRoute(builder: (_) {
-                            return ExperienceEditScreen(expList: list,);
+                            return ExperienceEditScreen(expList: List.of(list));
                           }));
                         }
                         else{

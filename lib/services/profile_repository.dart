@@ -7,4 +7,8 @@ abstract class ProfileRepository{
 
   Future updateHeader(String profileId, HeaderEntity headerEntity);
 
+  Future createExperience(String profileId, ExperienceEntity newExp);
+
+  Future deleteExperience(String profileId, int expId);
+
 }

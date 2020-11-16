@@ -26,6 +26,9 @@ class ProfileState extends ChangeNotifier {
     });
   }
 
+  Future deleteExperience(String profileId, int expId) =>
+    repository.deleteExperience(profileId, expId);
+
   bool get isLoading => _isLoading;
 
   Profile get profile => _profile;
