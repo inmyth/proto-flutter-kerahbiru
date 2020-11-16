@@ -17,7 +17,10 @@ Uses **Provided**design pattern. Guides:
 - pass a copy of the data to the next screen
 
 ## Todo
-- splash screen
+- date picker for exp end date, must use composite validators (need key)
+- global keys
+- global formats (date, currency, etc)
+- [x] splash screen
 - new user registration
     - could use stepper
 - theme
