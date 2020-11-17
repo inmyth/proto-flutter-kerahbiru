@@ -422,7 +422,7 @@ class _Certification extends StatelessWidget {
                   GestureDetector(
                     child: IconButton(
                       icon: Icon(Icons.add),
-                      tooltip: 'Add new item',
+                      tooltip: 'Add new item', onPressed: null,
                     ),
                   ),
                 ]

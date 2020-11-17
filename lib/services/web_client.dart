@@ -110,7 +110,7 @@ class WebClient implements ProfileRepository {
   }
 
   @override
-  Future updateHeader(String profileId, HeaderEntity headerEntity) {
+  void updateHeader(String profileId, HeaderEntity headerEntity) {
     Future.delayed(
         delay,
         () => this.david = ProfileEntity(
