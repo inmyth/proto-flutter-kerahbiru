@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_entity.dart';
 
 class Profile {
@@ -76,7 +77,7 @@ abstract class CommonItem {
   final DateTime start;
   final DateTime end;
   final String description;
-  final format = new DateFormat('yyyy MMM');
+  final format = Formats.commonDateFormat;
 
   String toDurationString() {
     String from = format.format(start);
@@ -121,7 +122,7 @@ class Certification {
   final String org;
   final DateTime dateIssued;
   final String url;
-  final format = new DateFormat('yyyy MMM');
+  final format = Formats.commonDateFormat;
 
   Certification({this.title, this.org, this.dateIssued, this.url});
 

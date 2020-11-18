@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
-import 'package:proto_flutter_kerahbiru/screens/experience_form_view.dart';
+import 'package:proto_flutter_kerahbiru/screens/common_item_form_screen.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
@@ -32,7 +32,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return ExperienceForm();
+          return CommonItemForm();
         })),
         // tooltip: ArchSampleLocalizations.of(context).addTodo,
         child: const Icon(Icons.add),

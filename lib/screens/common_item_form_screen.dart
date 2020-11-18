@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/screens/consts.dart';
 import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 
-typedef DateValue = Function(DateTime);
+class CommonItemForm extends StatelessWidget {
+  final Map values = {'position': null, 'company': null, 'start': null, 'end': null, 'description': null};
 
-class ExperienceForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   final maxLength = 100;
+
+  CommonItemForm({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,9 @@ class ExperienceForm extends StatelessWidget {
                     }
                     return null;
                   },
+                  onSaved: (v) {
+                    values['position'] = v;
+                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -58,11 +64,18 @@ class ExperienceForm extends StatelessWidget {
                     }
                     return null;
                   },
+                  onSaved: (v) {
+                    values['company'] = v;
+                  },
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                StartEndDates(),
+                StartEndDates(
+                  start: new DateTime.now(),
+                  end: new DateTime.now(),
+                  values: values,
+                ),
                 TextFormField(
                   minLines: 5,
                   maxLines: 8,
@@ -75,17 +88,19 @@ class ExperienceForm extends StatelessWidget {
                     }
                     return null;
                   },
+                  onSaved: (v) {
+                    values['description'] = v;
+                  },
                 ),
                 Builder(
                   builder: (context) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: RaisedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false
-                        // otherwise.
-                        if (_formKey.currentState.validate()) {
-                          // If the form is valid, display a Snackbar.
-                          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
+                        var form = _formKey.currentState;
+                        if (form.validate()) {
+                          form.save();
+                          Scaffold.of(context).showSnackBar(SnackBar(content: Text(values.toString())));
                         }
                       },
                       child: Text('Submit'),
@@ -102,8 +117,9 @@ class ExperienceForm extends StatelessWidget {
 class StartEndDates extends StatefulWidget {
   final DateTime start;
   final DateTime end;
+  final Map values;
 
-  const StartEndDates({Key key, this.start, this.end}) : super(key: key);
+  const StartEndDates({Key key, this.start, this.end, this.values}) : super(key: key);
 
   @override
   _StartEndDatesState createState() => _StartEndDatesState();
@@ -113,40 +129,46 @@ class _StartEndDatesState extends State<StartEndDates> {
   _StartEndDatesState();
 
   DateFormat dateFormat = Formats.formDateFormat;
-  DateTime _start;
-  DateTime _end;
   bool _isCurrentlyWorking;
 
   TextEditingController _startController;
   TextEditingController _endController;
   Function(String) _startValidator;
   Function(String) _endValidator;
+  FormFieldSetter _onSavedStart;
+  FormFieldSetter _onSavedEnd;
 
   @override
   void initState() {
     super.initState();
-    _end = widget.end;
-    _start = widget.start;
     _startController = new TextEditingController();
     _endController = new TextEditingController();
-    _isCurrentlyWorking = (_end != null && (_end.millisecondsSinceEpoch / 1000 == Consts.maxInt)) ? true : false;
+    _isCurrentlyWorking = (widget.end != null && (widget.end.millisecondsSinceEpoch / 1000 == Consts.maxInt)) ? true : false;
     _startValidator = (v) {
-      if(v.isEmpty){
+      if (v.isEmpty) {
         return "Start Date required";
       }
       return null;
     };
     _endValidator = (v) {
-      if(_isCurrentlyWorking){
+      if (_isCurrentlyWorking) {
         return null;
       }
-      if(v.isEmpty){
+      if (v.isEmpty) {
         return "End Date required";
       }
       if (dateFormat.parse(_startController.value.text).compareTo(dateFormat.parse(v)) >= 0) {
         return "End data has to be later than start date";
       }
       return null;
+    };
+
+    _onSavedStart = (v) {
+      widget.values['start'] = dateFormat.parse(v);
+    };
+
+    _onSavedEnd = (v) {
+      widget.values['end'] = _isCurrentlyWorking ? DateTime.fromMillisecondsSinceEpoch(Consts.maxInt * 1000) : dateFormat.parse(v);
     };
   }
 
@@ -172,7 +194,8 @@ class _StartEndDatesState extends State<StartEndDates> {
           label: 'Start Date',
           controller: _startController,
           isEnabled: true,
-          initialValue: _start,
+          initialValue: widget.start,
+          onSaved: _onSavedStart,
           validator: _startValidator,
         ),
         SizedBox(
@@ -183,7 +206,8 @@ class _StartEndDatesState extends State<StartEndDates> {
           label: 'End Date',
           controller: _endController,
           isEnabled: !_isCurrentlyWorking,
-          initialValue: _end,
+          initialValue: widget.end,
+          onSaved: _onSavedEnd,
           validator: _endValidator,
         ),
         CheckboxFormField(
@@ -202,9 +226,16 @@ class _DateField extends StatefulWidget {
   final DateTime initialValue;
   final Function(String) validator;
   final TextEditingController controller;
+  final FormFieldSetter onSaved;
 
   const _DateField(
-      {Key key, @required this.label, @required this.isEnabled, @required this.initialValue, @required this.validator, @required this.controller})
+      {Key key,
+      @required this.label,
+      @required this.isEnabled,
+      @required this.initialValue,
+      @required this.validator,
+      @required this.controller,
+      @required this.onSaved})
       : super(key: key);
 
   @override
@@ -215,8 +246,6 @@ class _DateFieldState extends State<_DateField> {
   final DateFormat _dateFormat = Formats.formDateFormat;
   final _now = DateTime.now();
   DateTime _input;
-
-// https://alvinalexander.com/flutter/how-to-supply-initial-value-textformfield/
 
   _DateFieldState();
 
@@ -233,7 +262,6 @@ class _DateFieldState extends State<_DateField> {
       _initController(_input);
     });
   }
-
 
   void _initController(DateTime input) => widget.controller.text = input != null ? _dateFormat.format(input) : '';
 
@@ -256,6 +284,7 @@ class _DateFieldState extends State<_DateField> {
         decoration: InputDecoration(
           labelText: widget.label,
         ),
+        onSaved: widget.onSaved,
       )),
       IconButton(
         disabledColor: Colors.grey,
@@ -302,7 +331,7 @@ class CheckboxFormField extends FormField<bool> {
             });
 }
 
-_showPickerDate(BuildContext context, String title, DateTime now, DateValue onSelected) {
+_showPickerDate(BuildContext context, String title, DateTime now, Function(DateTime) onSelected) {
   Picker(
       hideHeader: true,
       adapter: DateTimePickerAdapter(type: PickerDateTimeType.kYM, maxValue: new DateTime(now.year, now.month - 1)),
@@ -312,6 +341,5 @@ _showPickerDate(BuildContext context, String title, DateTime now, DateValue onSe
       cancelText: 'CANCEL',
       onConfirm: (Picker picker, List value) {
         onSelected((picker.adapter as DateTimePickerAdapter).value);
-        print((picker.adapter as DateTimePickerAdapter).value);
       }).showDialog(context);
 }
