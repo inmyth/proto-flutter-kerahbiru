@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
@@ -72,7 +70,7 @@ class ExperienceForm extends StatelessWidget {
                   minLines: 5,
                   maxLines: 8,
                   decoration: const InputDecoration(
-                    labelText: 'Description',
+                    labelText: 'Description (optional)',
                   ),
                   validator: (value) {
                     if (value.length > maxLength) {
@@ -104,52 +102,6 @@ class ExperienceForm extends StatelessWidget {
   }
 }
 
-// class _StartDateField extends _DateField {
-//   const _StartDateField(DateTime initialValue, Function(String) validator) : super(key: Keys.startDateField, label: 'Start Date (i.e 2016-2)', isEnabled: true, initialValue: initialValue, validator: validator);
-// }
-//
-// class _EndDateField extends StatefulWidget {
-//   final bool isCurrentlyWorking;
-//   final DateTime initialValue;
-//   final Function(String) validator;
-//
-//   const _EndDateField({this.isCurrentlyWorking, this.initialValue, this.validator}) : super(key: Keys.endDateField);
-//
-//   @override
-//   State<StatefulWidget> createState() => _EndDateFieldState(isCurrentlyWorking);
-// }
-//
-// class _EndDateFieldState extends State<_EndDateField> {
-//   bool _isCurrentlyWorking;
-//
-//   _EndDateFieldState(this._isCurrentlyWorking);
-//
-//   void _updateCurrentlyWorking(bool newStatus) {
-//     setState(() {
-//       this._isCurrentlyWorking = newStatus;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         _DateField(key: Keys.endDateField, label: 'End Date', isEnabled: !_isCurrentlyWorking, initialValue: widget.initialValue, validator: widget.validator,),
-//         CheckboxFormField(
-//           title: Text('Is currently working here ?'),
-//           initialValue: _isCurrentlyWorking,
-//           onChecked: (v) {
-//             _updateCurrentlyWorking(v);
-//           },
-//           validator: (v) {
-//             return null;
-//           },
-//         )
-//       ],
-//     );
-//   }
-// }
-
 class StartEndDates extends StatefulWidget {
   final DateTime start;
   final DateTime end;
@@ -163,6 +115,7 @@ class StartEndDates extends StatefulWidget {
 class _StartEndDatesState extends State<StartEndDates> {
   _StartEndDatesState();
 
+  DateFormat dateFormat = Formats.formFormat;
   DateTime _start;
   DateTime _end;
   bool _isCurrentlyWorking;
@@ -175,13 +128,16 @@ class _StartEndDatesState extends State<StartEndDates> {
   @override
   void initState() {
     super.initState();
-    _isCurrentlyWorking = (_end.millisecondsSinceEpoch / 1000 == Consts.maxInt) ? true : false;
-    _end = (_isCurrentlyWorking || widget.end == null) ? null : widget.end;
+    _end = widget.end;
+    _start = widget.start;
+    _startController = new TextEditingController();
+    _endController = new TextEditingController();
+    _isCurrentlyWorking = (_end != null && (_end.millisecondsSinceEpoch / 1000 == Consts.maxInt)) ? true : false;
     _startValidator = (v) {
       return null;
     };
     _endValidator = (v) {
-      if (DateTime.parse(_startController.value.text).compareTo(DateTime.parse(v)) >= 0) {
+      if (dateFormat.parse(_startController.value.text).compareTo(dateFormat.parse(v)) >= 0) {
         return "Start date has to be earlier than end date";
       }
       return null;
@@ -251,7 +207,7 @@ class _DateField extends StatefulWidget {
 
 class _DateFieldState extends State<_DateField> {
   final DateFormat _dateFormat = Formats.formFormat;
-  Function onPickerPressed;
+  final _now = DateTime.now();
   DateTime _input;
 
 // https://alvinalexander.com/flutter/how-to-supply-initial-value-textformfield/
@@ -262,21 +218,24 @@ class _DateFieldState extends State<_DateField> {
   initState() {
     super.initState();
     _input = widget.initialValue;
-    widget.controller.text = _input != null ? _dateFormat.format(_input) : '';
-    onPickerPressed = widget.isEnabled == false ? null : () => showPickerDate(context, widget.label, _updateInput);
+    _initController(_input);
   }
 
   void _updateInput(DateTime pickedDate) {
     setState(() {
       _input = pickedDate;
+      _initController(_input);
     });
   }
 
-  @override
-  void dispose() {
-    widget.controller.dispose();
-    super.dispose();
-  }
+
+  void _initController(DateTime input) => widget.controller.text = input != null ? _dateFormat.format(input) : '';
+
+  // @override
+  // void dispose() {
+  //   widget.controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -295,7 +254,7 @@ class _DateFieldState extends State<_DateField> {
         disabledColor: Colors.grey,
         icon: new Icon(Icons.add_box_outlined),
         tooltip: widget.label,
-        onPressed: onPickerPressed,
+        onPressed: widget.isEnabled ? () => _showPickerDate(context, widget.label, _now, _updateInput) : null,
       )
     ]);
   }
@@ -336,8 +295,7 @@ class CheckboxFormField extends FormField<bool> {
             });
 }
 
-showPickerDate(BuildContext context, String title, DateValue onSelected) {
-  var now = new DateTime(2020, 1);
+_showPickerDate(BuildContext context, String title, DateTime now, DateValue onSelected) {
   Picker(
       hideHeader: true,
       adapter: DateTimePickerAdapter(type: PickerDateTimeType.kYM, maxValue: new DateTime(now.year, now.month - 1)),

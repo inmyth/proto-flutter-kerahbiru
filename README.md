@@ -16,9 +16,13 @@ Uses **Provided**design pattern. Guides:
     - setState will trigger rebuild on any widget that holds reference to the data.
     - parent-child relations : parent cannot call child but triggers change due to child using parent (widget.) [read](https://stackoverflow.com/questions/48481590/how-to-set-update-state-of-statefulwidget-from-other-statefulwidget-in-flutter)
 - pass a copy of the data to the next screen
+- date in repo is stored as second, currently working date is stored as Integer.MAX
 
 ## Todo
-- date picker for exp end date, must use composite validators (need key)
+- date picker for exp end date
+    - [x] has upper limit(a month before now) and lower limit
+    - [x] "currently working" checkbox will disable End Date and its date picker
+    - [x] validates start date < end date
 - global keys
 - global formats (date, currency, etc)
 - [x] splash screen
