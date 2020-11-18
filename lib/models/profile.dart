@@ -69,7 +69,7 @@ class Showcase {
   }
 }
 
-abstract class ExperienceLike {
+abstract class CommonItem {
   final int id;
   final String title;
   final String org;
@@ -84,11 +84,11 @@ abstract class ExperienceLike {
     return "$from - $to";
   }
 
-  ExperienceLike({this.id, this.title, this.org, this.start, this.end, this.description});
+  CommonItem({this.id, this.title, this.org, this.start, this.end, this.description});
 
 }
 
-class Experience extends ExperienceLike{
+class Experience extends CommonItem{
   Experience({int id, String title, String org, DateTime start, DateTime end, String description}) : super(id: id, title: title, org: org, start: start, end: end, description: description);
 
   static Experience fromEntity(ExperienceEntity entity) {
@@ -102,7 +102,7 @@ class Experience extends ExperienceLike{
   }
 }
 
-class Project extends ExperienceLike{
+class Project extends CommonItem{
 
   Project({int id, String title, String org, DateTime start, DateTime end, String description}) : super(id: id, title: title, org: org, start: start, end: end, description: description);
 
@@ -134,7 +134,7 @@ class Certification {
 
 }
 
-class Education extends ExperienceLike {
+class Education extends CommonItem {
   Education({int id, String title, String org, DateTime start, DateTime end, String description}) : super(id: id, title: title, org: org, start: start, end: end, description: description);
 
   static Education fromEntity(EducationEntity entity) {

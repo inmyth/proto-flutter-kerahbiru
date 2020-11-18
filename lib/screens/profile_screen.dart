@@ -37,10 +37,10 @@ class ProfileScreen extends StatelessWidget {
                     _Head(header: profileState.profile.header),
                     _ShowcaseCarousel(showcases: profileState.profile.showcases),
                     _About(about: profileState.profile.about),
-                    _Experience(list: profileState.profile.experiences, title: "Experiences", isAddable: true),
-                    _Experience(list: profileState.profile.projects, title: "Projects", isAddable: true),
+                    _Common(list: profileState.profile.experiences, title: "Experiences", isAddable: true),
+                    _Common(list: profileState.profile.projects, title: "Projects", isAddable: true),
                     _Certification(list: profileState.profile.certifications),
-                    _Experience(list: profileState.profile.educations, title: "Education", isAddable: true),
+                    _Common(list: profileState.profile.educations, title: "Education", isAddable: true),
                   ]
                 );
               }
@@ -311,10 +311,10 @@ class _About extends StatelessWidget {
 }
 
 
-class _Experience extends StatelessWidget {
-  const _Experience({this.list, this.title, this.isAddable});
+class _Common extends StatelessWidget {
+  const _Common({this.list, this.title, this.isAddable});
 
-  final List<ExperienceLike> list;
+  final List<CommonItem> list;
   final String title;
   final isAddable;
 
@@ -356,7 +356,7 @@ class _Experience extends StatelessWidget {
           SizedBox(
             height: 10.0,
           ),
-          ...list.map((e) => _ExperienceItem(item: e)).toList(),
+          ...list.map((e) => _CommonListItem(item: e)).toList(),
         ],
       ),
     );
@@ -364,10 +364,10 @@ class _Experience extends StatelessWidget {
 }
 
 
-class _ExperienceItem extends StatelessWidget {
-  final ExperienceLike item;
+class _CommonListItem extends StatelessWidget {
+  final CommonItem item;
 
-  const _ExperienceItem({this.item}) ;
+  const _CommonListItem({this.item}) ;
 
   @override
   Widget build(BuildContext context) {

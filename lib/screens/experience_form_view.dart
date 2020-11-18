@@ -63,9 +63,6 @@ class ExperienceForm extends StatelessWidget {
                   height: 10,
                 ),
                 StartEndDates(),
-                SizedBox(
-                  height: 10,
-                ),
                 TextFormField(
                   minLines: 5,
                   maxLines: 8,
@@ -252,6 +249,7 @@ class _DateFieldState extends State<_DateField> {
       Expanded(
           child: TextFormField(
         readOnly: true,
+        onTap: widget.isEnabled ? () => _showPickerDate(context, widget.label, _now, _updateInput) : null,
         controller: widget.controller,
         enabled: widget.isEnabled,
         validator: widget.validator,

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class ExperienceEditScreen extends StatefulWidget {
   final String profileId;
-  final List<ExperienceLike> expList;
+  final List<CommonItem> expList;
 
   const ExperienceEditScreen({this.profileId, this.expList}) : super(key: Keys.editExperienceScreen);
 
@@ -19,7 +19,7 @@ class ExperienceEditScreen extends StatefulWidget {
 
 class _ExperienceEditScreen extends State<ExperienceEditScreen> {
   final String _profileId;
-  final List<ExperienceLike> _expList;
+  final List<CommonItem> _expList;
 
   _ExperienceEditScreen(this._profileId, this._expList);
 
@@ -79,7 +79,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
 }
 
 class _ExpCard extends StatelessWidget {
-  final ExperienceLike item;
+  final CommonItem item;
   final VoidCallback onDelete;
 
   const _ExpCard({@required this.item, @required this.onDelete});
