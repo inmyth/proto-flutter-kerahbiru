@@ -26,7 +26,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Consumer<ProfileState>(
       builder: (context, profileState, child) {
         return Scaffold(
@@ -44,7 +44,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
               }));
               var newItem = new Experience(
                   id: res['id'], title: res['title'], org: res['org'], start: res['start'], end: res['end'], description: res['description']);
-              _addNewItem(newItem);
+              _createItem(newItem);
               profileState.createExperience(_profileId, newItem);
               _isUpdated = true;
             },
@@ -69,7 +69,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
     });
   }
 
-  void _addNewItem(Experience newItem) {
+  void _createItem(Experience newItem) {
     setState(() {
       _expList.add(newItem);
     });

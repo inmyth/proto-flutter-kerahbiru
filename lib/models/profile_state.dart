@@ -9,7 +9,6 @@ class ProfileState extends ChangeNotifier {
 
   bool _isLoading = false;
 
-
   ProfileState({this.repository});
 
   Future loadProfile() {
