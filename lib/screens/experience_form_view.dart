@@ -134,11 +134,20 @@ class _StartEndDatesState extends State<StartEndDates> {
     _endController = new TextEditingController();
     _isCurrentlyWorking = (_end != null && (_end.millisecondsSinceEpoch / 1000 == Consts.maxInt)) ? true : false;
     _startValidator = (v) {
+      if(v.isEmpty){
+        return "Start Date required";
+      }
       return null;
     };
     _endValidator = (v) {
+      if(_isCurrentlyWorking){
+        return null;
+      }
+      if(v.isEmpty){
+        return "End Date required";
+      }
       if (dateFormat.parse(_startController.value.text).compareTo(dateFormat.parse(v)) >= 0) {
-        return "Start date has to be earlier than end date";
+        return "End data has to be later than start date";
       }
       return null;
     };
