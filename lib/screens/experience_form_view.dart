@@ -115,7 +115,7 @@ class StartEndDates extends StatefulWidget {
 class _StartEndDatesState extends State<StartEndDates> {
   _StartEndDatesState();
 
-  DateFormat dateFormat = Formats.formFormat;
+  DateFormat dateFormat = Formats.formDateFormat;
   DateTime _start;
   DateTime _end;
   bool _isCurrentlyWorking;
@@ -206,7 +206,7 @@ class _DateField extends StatefulWidget {
 }
 
 class _DateFieldState extends State<_DateField> {
-  final DateFormat _dateFormat = Formats.formFormat;
+  final DateFormat _dateFormat = Formats.formDateFormat;
   final _now = DateTime.now();
   DateTime _input;
 
