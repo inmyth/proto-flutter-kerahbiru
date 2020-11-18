@@ -26,6 +26,10 @@ class ProfileState extends ChangeNotifier {
     });
   }
 
+  Future createExperience(String profileId, Experience experience){
+    return repository.createExperience(profileId, experience.toEntity());
+  }
+
   Future deleteExperience(String profileId, int expId) =>
     repository.deleteExperience(profileId, expId);
 

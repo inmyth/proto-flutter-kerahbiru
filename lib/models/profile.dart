@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:proto_flutter_kerahbiru/screens/consts.dart';
 import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_entity.dart';
 
@@ -41,20 +42,20 @@ class Header {
 
   static Header fromEntity(HeaderEntity entity) {
     return Header(
-      name: entity.name,
-      country: entity.country,
-      region: entity.region,
-      avatarUrl: entity.avatarUrl,
-      summary: entity.summary,
-      backgroundUrl: entity.backgroundUrl
-    );
+        name: entity.name,
+        country: entity.country,
+        region: entity.region,
+        avatarUrl: entity.avatarUrl,
+        summary: entity.summary,
+        backgroundUrl: entity.backgroundUrl);
   }
 
   String toResidenceString() => "$region, $country";
 }
 
-class About{
+class About {
   final String about;
+
   About({this.about});
 
   static About fromEntity(AboutEntity entity) => About(about: entity.about);
@@ -86,11 +87,11 @@ abstract class CommonItem {
   }
 
   CommonItem({this.id, this.title, this.org, this.start, this.end, this.description});
-
 }
 
-class Experience extends CommonItem{
-  Experience({int id, String title, String org, DateTime start, DateTime end, String description}) : super(id: id, title: title, org: org, start: start, end: end, description: description);
+class Experience extends CommonItem {
+  Experience({int id, String title, String org, DateTime start, DateTime end, String description})
+      : super(id: id, title: title, org: org, start: start, end: end, description: description);
 
   static Experience fromEntity(ExperienceEntity entity) {
     return Experience(
@@ -101,11 +102,21 @@ class Experience extends CommonItem{
         end: new DateTime.fromMillisecondsSinceEpoch(entity.end * 1000),
         description: entity.description);
   }
+
+  ExperienceEntity toEntity() {
+    return new ExperienceEntity(
+        id: this.id,
+        title: this.title,
+        org: this.org,
+        start: this.start.millisecondsSinceEpoch == Consts.maxInt * 1000 ? Consts.maxInt : this.start.millisecondsSinceEpoch ~/ 1000,
+        end: this.end.millisecondsSinceEpoch  ~/ 1000,
+        description: this.description);
+  }
 }
 
-class Project extends CommonItem{
-
-  Project({int id, String title, String org, DateTime start, DateTime end, String description}) : super(id: id, title: title, org: org, start: start, end: end, description: description);
+class Project extends CommonItem {
+  Project({int id, String title, String org, DateTime start, DateTime end, String description})
+      : super(id: id, title: title, org: org, start: start, end: end, description: description);
 
   static Project fromEntity(ProjectEntity entity) {
     return Project(
@@ -132,11 +143,11 @@ class Certification {
   }
 
   String toDurationString() => format.format(dateIssued);
-
 }
 
 class Education extends CommonItem {
-  Education({int id, String title, String org, DateTime start, DateTime end, String description}) : super(id: id, title: title, org: org, start: start, end: end, description: description);
+  Education({int id, String title, String org, DateTime start, DateTime end, String description})
+      : super(id: id, title: title, org: org, start: start, end: end, description: description);
 
   static Education fromEntity(EducationEntity entity) {
     return Education(

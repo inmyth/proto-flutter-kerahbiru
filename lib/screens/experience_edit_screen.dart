@@ -20,36 +20,58 @@ class ExperienceEditScreen extends StatefulWidget {
 class _ExperienceEditScreen extends State<ExperienceEditScreen> {
   final String _profileId;
   final List<CommonItem> _expList;
+  bool _isUpdated = false;
 
   _ExperienceEditScreen(this._profileId, this._expList);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Add new work"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return CommonItemForm();
-        })),
-        // tooltip: ArchSampleLocalizations.of(context).addTodo,
-        child: const Icon(Icons.add),
-      ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-          child: _getTaskListView(),
-          alignment: Alignment(0.0, 0.0),
-        ),
-      ),
+    return Consumer<ProfileState>(
+      builder: (context, profileState, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Add new work"),
+            leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(_isUpdated),
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return CommonItemForm();
+              }));
+              var newItem = new Experience(
+                  id: res['id'], title: res['title'], org: res['org'], start: res['start'], end: res['end'], description: res['description']);
+              _addNewItem(newItem);
+              profileState.createExperience(_profileId, newItem);
+              _isUpdated = true;
+            },
+            // tooltip: ArchSampleLocalizations.of(context).addTodo,
+            child: const Icon(Icons.add),
+          ),
+          body: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              child: _getTaskListView(),
+              alignment: Alignment(0.0, 0.0),
+            ),
+          ),
+        );
+      },
     );
   }
 
   void _removeItem(int index) {
     setState(() {
       _expList.removeAt(index);
+    });
+  }
+
+  void _addNewItem(Experience newItem) {
+    setState(() {
+      _expList.add(newItem);
     });
   }
 

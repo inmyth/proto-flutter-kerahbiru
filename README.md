@@ -15,10 +15,25 @@ Uses **Provided**design pattern. Guides:
 - stateful widget : widget that changes on UI state, read [this](https://stackoverflow.com/questions/51931017/update-ui-after-removing-items-from-list)
     - setState will trigger rebuild on any widget that holds reference to the data.
     - parent-child relations : parent cannot call child but triggers change due to child using parent (widget.) [read](https://stackoverflow.com/questions/48481590/how-to-set-update-state-of-statefulwidget-from-other-statefulwidget-in-flutter)
-- pass a copy of the data to the next screen
+- semi-optimistic approach A
+    - upload object
+    - object is assumed live
+    - in main page, do reload to fetch data from API
+```
+  Profile -> sends a copy of experience list to -> Edit Profile -> opens a -> New Profile
+
+  new Profile -> sends an REST patch, adds an item of list in -> Edit Profile Screen -> triggers reload in -> Profile
+```
+- semi-optimistic approach B
+    - upload object with pending id
+    - object is assumed live in app
+    - on API callback, remove or preserve
 - date in repo is stored as second, currently working date is stored as Integer.MAX
+- reload page depending on new updates
+    - updating state object in State (ChangeNotifier) triggers any Selector that monitors it
 
 ## Todo
+- [x] reload if new updates
 - date picker for exp end date
     - [x] has upper limit(a month before now) and lower limit
     - [x] "currently working" checkbox will disable End Date and its date picker

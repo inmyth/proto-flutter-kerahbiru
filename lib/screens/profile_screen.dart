@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
 class ProfileScreen extends StatelessWidget {
-
   static const String routeName = '/';
 
   @override
@@ -18,40 +17,33 @@ class ProfileScreen extends StatelessWidget {
         title: Text("Profile"),
       ),
       drawer: AppDrawer(),
-
       body: Selector<ProfileState, bool>(
         selector: (context, model) => model.isLoading,
         builder: (context, isLoading, _) {
-          if(isLoading){
+          if (isLoading) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
 
           return Container(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-            child: Consumer<ProfileState>(
-              builder: (context, profileState, child){
-                return ListView(
-                  children: [
-                    _Head(header: profileState.profile.header),
-                    _ShowcaseCarousel(showcases: profileState.profile.showcases),
-                    _About(about: profileState.profile.about),
-                    _Common(list: profileState.profile.experiences, title: "Experiences", isAddable: true),
-                    _Common(list: profileState.profile.projects, title: "Projects", isAddable: true),
-                    _Certification(list: profileState.profile.certifications),
-                    _Common(list: profileState.profile.educations, title: "Education", isAddable: true),
-                  ]
-                );
-              }
-            )
-          );
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+              child: Consumer<ProfileState>(builder: (context, profileState, child) {
+                return ListView(children: [
+                  _Head(header: profileState.profile.header),
+                  _ShowcaseCarousel(showcases: profileState.profile.showcases),
+                  _About(about: profileState.profile.about),
+                  _Common(list: profileState.profile.experiences, title: "Experiences", isAddable: true),
+                  _Common(list: profileState.profile.projects, title: "Projects", isAddable: true),
+                  _Certification(list: profileState.profile.certifications),
+                  _Common(list: profileState.profile.educations, title: "Education", isAddable: true),
+                ]);
+              }));
         },
       ),
     );
   }
 }
-
 
 class _Head extends StatelessWidget {
   final Header header;
@@ -63,170 +55,150 @@ class _Head extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-          children: [
-            Stack(children: <Widget>[
-              Container(
-                height: 250.0,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage(header.backgroundUrl),
-                        fit: BoxFit.cover)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: circleRadius / 2.0,
-                      ),
-
-                      ///here we create space for the circle avatar to get ut of the box
-                      child: Container(
-                        height: 250.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 8.0,
-                              offset: Offset(0.0, 5.0),
-                            ),
-                          ],
-                        ),
-                        width: double.infinity,
-                        child: Padding(
-                            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: circleRadius / 2,
-                                ),
-                                Text(
-                                  header.name,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 34.0),
-                                ),
-                                Text(
-                                  header.toResidenceString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0,
-                                      color: Colors.lightBlueAccent),
-                                ),
-                                SizedBox(
-                                  height: 30.0,
-                                ),
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 32.0),
-                                  child: Text(header.summary,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          height: 2.0,
-                                          fontSize: 16.0)),
-                                )
-                              ],
-                            )),
-                      ),
-                    ),
-
-                    ///Image Avatar
-                    Container(
-                      width: circleRadius,
-                      height: circleRadius,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8.0,
-                            offset: Offset(0.0, 5.0),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Center(
-                          child: Container(
-                            child:             CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                header.avatarUrl
-                              ),
-                              radius: 50.0,
-                            ),
-
-                            /// replace your image with the Icon
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ]),
-            SizedBox(
-              height: 20.0,
-            ),
-          ],
-        ));
-  }
-}
-
-
-List<Widget> _buildSliders(BuildContext context, List<Showcase> showcases) {
-  return showcases
-      .map((item) => GestureDetector(
-    onTap: (){
-      Navigator.push(context, MaterialPageRoute(builder: (_) {
-        return _ShowcaseImageScreen(item.url);
-      }));
-    },
-
-    child: Container(
-      child: Container(
-        margin: EdgeInsets.all(5.0),
-        child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      children: [
+        Stack(children: <Widget>[
+          Container(
+            height: 250.0,
+            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(header.backgroundUrl), fit: BoxFit.cover)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Stack(
+              alignment: Alignment.topCenter,
               children: <Widget>[
-                Image.network(item.url, fit: BoxFit.cover, width: 1000.0),
-                Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: circleRadius / 2.0,
+                  ),
+
+                  ///here we create space for the circle avatar to get ut of the box
                   child: Container(
+                    height: 250.0,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(200, 0, 0, 0),
-                          Color.fromARGB(0, 0, 0, 0)
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8.0,
+                          offset: Offset(0.0, 5.0),
+                        ),
+                      ],
                     ),
-                    padding: EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 20.0),
-                    child: Text(
-                      'No. ${showcases.indexOf(item)} image',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
+                    width: double.infinity,
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: circleRadius / 2,
+                            ),
+                            Text(
+                              header.name,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34.0),
+                            ),
+                            Text(
+                              header.toResidenceString(),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.lightBlueAccent),
+                            ),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                              child: Text(header.summary,
+                                  textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w300, height: 2.0, fontSize: 16.0)),
+                            )
+                          ],
+                        )),
+                  ),
+                ),
+
+                ///Image Avatar
+                Container(
+                  width: circleRadius,
+                  height: circleRadius,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8.0,
+                        offset: Offset(0.0, 5.0),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Center(
+                      child: Container(
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(header.avatarUrl),
+                          radius: 50.0,
+                        ),
+
+                        /// replace your image with the Icon
                       ),
                     ),
                   ),
                 ),
               ],
-            )),
-      ),
-    ),
-  ))
+            ),
+          ),
+        ]),
+        SizedBox(
+          height: 20.0,
+        ),
+      ],
+    ));
+  }
+}
+
+List<Widget> _buildSliders(BuildContext context, List<Showcase> showcases) {
+  return showcases
+      .map((item) => GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return _ShowcaseImageScreen(item.url);
+              }));
+            },
+            child: Container(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.network(item.url, fit: BoxFit.cover, width: 1000.0),
+                        Positioned(
+                          bottom: 0.0,
+                          left: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                            child: Text(
+                              'No. ${showcases.indexOf(item)} image',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+            ),
+          ))
       .toList();
 }
 
@@ -239,20 +211,20 @@ class _ShowcaseCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-          children: <Widget>[
-            CarouselSlider(
-              options: CarouselOptions(
-                autoPlay: true,
-                aspectRatio: 2.0,
-                enlargeCenterPage: true,
-              ),
-              items: _buildSliders(context, showcases),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-          ],
-        ));
+      children: <Widget>[
+        CarouselSlider(
+          options: CarouselOptions(
+            autoPlay: true,
+            aspectRatio: 2.0,
+            enlargeCenterPage: true,
+          ),
+          items: _buildSliders(context, showcases),
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
+      ],
+    ));
   }
 }
 
@@ -292,15 +264,11 @@ class _About extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Description",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
+          Text("Description", style: TextStyle(fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
           SizedBox(
             height: 10.0,
           ),
-          Text(about.about,
-              style: TextStyle(
-                  fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
+          Text(about.about, style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
           SizedBox(
             height: 20.0,
           ),
@@ -309,7 +277,6 @@ class _About extends StatelessWidget {
     );
   }
 }
-
 
 class _Common extends StatelessWidget {
   const _Common({this.list, this.title, this.isAddable});
@@ -326,32 +293,27 @@ class _Common extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(this.title,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
-                  GestureDetector(
-                    child: IconButton(
-                      icon: Icon(Icons.add),
-                      tooltip: 'Add experience',
-                      onPressed: () {
-                        if(this.isAddable){
-                          Navigator.push(context, MaterialPageRoute(builder: (_) {
-                            return ExperienceEditScreen(expList: List.of(list));
-                          }));
-                        }
-                        else{
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Lagi dibuat')));
-                        }
-
-                      },
-                    ),
-                  ),
-                ]
-            ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(this.title, style: TextStyle(fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
+              GestureDetector(
+                child: IconButton(
+                  icon: Icon(Icons.add),
+                  tooltip: 'Add experience',
+                  onPressed: () async {
+                    if (this.isAddable) {
+                      bool isUpdated = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return ExperienceEditScreen(expList: List.of(list));
+                      }));
+                      if (isUpdated) {
+                        Provider.of<ProfileState>(context, listen: false).loadProfile();
+                      }
+                    } else {
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Lagi dibuat')));
+                    }
+                  },
+                ),
+              ),
+            ]),
           ),
           SizedBox(
             height: 10.0,
@@ -363,11 +325,10 @@ class _Common extends StatelessWidget {
   }
 }
 
-
 class _CommonListItem extends StatelessWidget {
   final CommonItem item;
 
-  const _CommonListItem({this.item}) ;
+  const _CommonListItem({this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -375,21 +336,13 @@ class _CommonListItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(item.title,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-          Text(item.org,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-          Text(item.toDurationString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
+          Text(item.title, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
+          Text(item.org, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
+          Text(item.toDurationString(), style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
           SizedBox(
             height: 5.0,
           ),
-          Text(item.description,
-              style: TextStyle(
-                  fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
+          Text(item.description, style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
           SizedBox(
             height: 20.0,
           ),
@@ -398,7 +351,6 @@ class _CommonListItem extends StatelessWidget {
     );
   }
 }
-
 
 class _Certification extends StatelessWidget {
   final List<Certification> list;
@@ -413,20 +365,16 @@ class _Certification extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Certifications & Qualifications",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
-                  GestureDetector(
-                    child: IconButton(
-                      icon: Icon(Icons.add),
-                      tooltip: 'Add new item', onPressed: null,
-                    ),
-                  ),
-                ]
-            ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text("Certifications & Qualifications", style: TextStyle(fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
+              GestureDetector(
+                child: IconButton(
+                  icon: Icon(Icons.add),
+                  tooltip: 'Add new item',
+                  onPressed: null,
+                ),
+              ),
+            ]),
           ),
           SizedBox(
             height: 10.0,
@@ -436,10 +384,9 @@ class _Certification extends StatelessWidget {
       ),
     );
   }
-
 }
 
-class _CertificationItem extends StatelessWidget{
+class _CertificationItem extends StatelessWidget {
   final Certification item;
 
   const _CertificationItem({this.item});
@@ -450,24 +397,12 @@ class _CertificationItem extends StatelessWidget{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(item.title,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-          Text(item.org,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-          Text(item.toDurationString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
+          Text(item.title, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
+          Text(item.org, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
+          Text(item.toDurationString(), style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
           GestureDetector(
-            child: Text("link",
-                style: TextStyle(
-                    fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0,
-                    color: Colors.lightBlue.withOpacity(1.0)
-                )
-
-            ),
-            onTap: (){
+            child: Text("link", style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0, color: Colors.lightBlue.withOpacity(1.0))),
+            onTap: () {
               launchInBrowser(item.url);
             },
           ),
@@ -482,5 +417,3 @@ class _CertificationItem extends StatelessWidget{
     );
   }
 }
-
-

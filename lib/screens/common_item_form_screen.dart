@@ -5,15 +5,17 @@ import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/screens/consts.dart';
 import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
+import 'dart:math';
 
 class CommonItemForm extends StatelessWidget {
-  final Map values = {'position': null, 'company': null, 'start': null, 'end': null, 'description': null};
+  final CommonItem model;
+  final Map values = {'title': null, 'org': null, 'start': null, 'end': null, 'description': null};
 
   final _formKey = GlobalKey<FormState>();
 
   final maxLength = 100;
 
-  CommonItemForm({Key key}) : super(key: key);
+  CommonItemForm({Key key, this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class CommonItemForm extends StatelessWidget {
                     return null;
                   },
                   onSaved: (v) {
-                    values['position'] = v;
+                    values['title'] = v;
                   },
                 ),
                 SizedBox(
@@ -65,15 +67,13 @@ class CommonItemForm extends StatelessWidget {
                     return null;
                   },
                   onSaved: (v) {
-                    values['company'] = v;
+                    values['org'] = v;
                   },
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 StartEndDates(
-                  start: new DateTime.now(),
-                  end: new DateTime.now(),
                   values: values,
                 ),
                 TextFormField(
@@ -100,6 +100,8 @@ class CommonItemForm extends StatelessWidget {
                         var form = _formKey.currentState;
                         if (form.validate()) {
                           form.save();
+                          values['id'] = model?.id ?? new Random().nextInt(1000);
+                          Navigator.pop(context, values);
                           Scaffold.of(context).showSnackBar(SnackBar(content: Text(values.toString())));
                         }
                       },
