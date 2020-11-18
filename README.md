@@ -13,7 +13,8 @@ Uses **Provided**design pattern. Guides:
     - extends (ChangeNotifier)[https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple]
     - broadcasts updates with notifyListeners
 - stateful widget : widget that changes on UI state, read [this](https://stackoverflow.com/questions/51931017/update-ui-after-removing-items-from-list)
-    - setState will trigger rebuild on any widget that holds reference to the data. If stateless screenA passes data to stateful screenB and there the data is modified inside setState then the widget in screeA is also rebuilt.
+    - setState will trigger rebuild on any widget that holds reference to the data.
+    - parent-child relations : parent cannot call child but triggers change due to child using parent (widget.) [read](https://stackoverflow.com/questions/48481590/how-to-set-update-state-of-statefulwidget-from-other-statefulwidget-in-flutter)
 - pass a copy of the data to the next screen
 
 ## Todo
