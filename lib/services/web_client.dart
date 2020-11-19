@@ -128,6 +128,7 @@ class WebClient implements ProfileRepository {
   Future createExperience(String profileId, ExperienceEntity newExp) => Future.delayed(delay, () {
       this.david.experiences.removeWhere((element) => element.id == newExp.id);
       this.david.experiences.add(newExp);
+      this.david.experiences.sort((a,b) => a.id - b.id);
   });
 
   @override

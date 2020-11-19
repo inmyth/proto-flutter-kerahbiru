@@ -13,8 +13,6 @@ class CommonItemForm extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final maxLength = 100;
-
   CommonItemForm({Key key, this.model}) : super(key: key);
 
   @override
@@ -33,6 +31,7 @@ class CommonItemForm extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
+                  initialValue: model?.title ?? '',
                   decoration: const InputDecoration(
                     hintText: '',
                     labelText: 'Posisi',
@@ -40,8 +39,8 @@ class CommonItemForm extends StatelessWidget {
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter some text';
-                    } else if (value.length > maxLength) {
-                      return 'Input cannot exceed 100 characters';
+                    } else if (value.length > 200) {
+                      return 'Input cannot exceed 200 characters';
                     }
                     return null;
                   },
@@ -53,7 +52,7 @@ class CommonItemForm extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
-                  initialValue: '',
+                  initialValue: model?.org ?? '',
                   decoration: const InputDecoration(
                     hintText: '',
                     labelText: 'Company',
@@ -61,8 +60,8 @@ class CommonItemForm extends StatelessWidget {
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter some text';
-                    } else if (value.length > maxLength) {
-                      return 'Input cannot exceed 100 characters';
+                    } else if (value.length > 200) {
+                      return 'Input cannot exceed 200 characters';
                     }
                     return null;
                   },
@@ -74,17 +73,20 @@ class CommonItemForm extends StatelessWidget {
                   height: 10,
                 ),
                 StartEndDates(
+                  start: model?.start,
+                  end: model?.end,
                   values: values,
                 ),
                 TextFormField(
                   minLines: 5,
                   maxLines: 8,
+                  initialValue: model?.description ?? '',
                   decoration: const InputDecoration(
                     labelText: 'Description (optional)',
                   ),
                   validator: (value) {
-                    if (value.length > maxLength) {
-                      return 'Input cannot exceed 100 characters';
+                    if (value.length > 2000) {
+                      return 'Input cannot exceed 2000 characters';
                     }
                     return null;
                   },
@@ -102,7 +104,6 @@ class CommonItemForm extends StatelessWidget {
                           form.save();
                           values['id'] = model?.id ?? new Random().nextInt(1000);
                           Navigator.pop(context, values);
-                          Scaffold.of(context).showSnackBar(SnackBar(content: Text(values.toString())));
                         }
                       },
                       child: Text('Submit'),

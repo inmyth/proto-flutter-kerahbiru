@@ -7,18 +7,18 @@ import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
 import 'package:provider/provider.dart';
 
-class ExperienceEditScreen extends StatefulWidget {
+class CommonItemEditScreen extends StatefulWidget {
   final String profileId;
   final List<CommonItem> expList;
   final CommonItem obj;
 
-  const ExperienceEditScreen({this.profileId, this.expList, this.obj}) : super(key: Keys.editExperienceScreen);
+  const CommonItemEditScreen({this.profileId, this.expList, this.obj}) : super(key: Keys.editExperienceScreen);
 
   @override
   State<StatefulWidget> createState() => _ExperienceEditScreen(profileId, expList);
 }
 
-class _ExperienceEditScreen extends State<ExperienceEditScreen> {
+class _ExperienceEditScreen extends State<CommonItemEditScreen> {
   final String _profileId;
   final List<CommonItem> _expList;
   bool _isUpdated = false;
@@ -30,6 +30,13 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
   Function(Map) _buildItem;
 
   _ExperienceEditScreen(this._profileId, this._expList);
+
+  void effectBuildItem(ProfileState state, Map res) {
+    var newItem = _buildItem(res);
+    _createInState(state, newItem);
+    _createItem(newItem);
+    _isUpdated = true;
+  }
 
   @override
   void initState() {
@@ -46,6 +53,9 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
           start: values['start'],
           end: values['end'],
           description: values['description']);
+    } else {
+      _title = 'error';
+      _emptyMsg = 'unknown common item type';
     }
   }
 
@@ -71,10 +81,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
                 final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
                   return CommonItemForm();
                 }));
-                var newItem = _buildItem(res);
-                _createInState(profileState, newItem);
-                _createItem(newItem);
-                _isUpdated = true;
+                effectBuildItem(profileState, res);
               },
               // tooltip: ArchSampleLocalizations.of(context).addTodo,
               child: const Icon(Icons.add),
@@ -82,7 +89,7 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
             body: Center(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                child: _getTaskListView(),
+                child: _getTaskListView(profileState),
                 alignment: Alignment(0.0, 0.0),
               ),
             ),
@@ -102,22 +109,31 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
 
   void _createItem(Experience newItem) {
     setState(() {
+      _expList.removeWhere((element) => element.id == newItem.id);
       _expList.add(newItem);
+      _expList.sort((a,b) => a.id - b.id);
     });
   }
 
-  Widget _getTaskListView() {
+  Widget _getTaskListView(ProfileState state) {
     return _expList.isNotEmpty
         ? ListView.builder(
             itemCount: _expList.length,
             itemBuilder: (BuildContext context, int position) {
               return _ExpCard(
-                  item: this._expList[position],
-                  onDelete: () {
-                    _deleteFromState(Provider.of<ProfileState>(context, listen: false), position);
-                    _removeItem(position);
-                    _isUpdated = true;
-                  });
+                item: this._expList[position],
+                onDelete: () {
+                  _deleteFromState(state, position);
+                  _removeItem(position);
+                  _isUpdated = true;
+                },
+                onEdit: () async {
+                  final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return CommonItemForm(model: this._expList[position]);
+                  }));
+                  effectBuildItem(state, res);
+                },
+              );
             })
         : Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -135,8 +151,9 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
 class _ExpCard extends StatelessWidget {
   final CommonItem item;
   final VoidCallback onDelete;
+  final Function onEdit;
 
-  const _ExpCard({@required this.item, @required this.onDelete});
+  const _ExpCard({@required this.item, @required this.onDelete, @required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -171,9 +188,7 @@ class _ExpCard extends StatelessWidget {
               const SizedBox(width: 8),
               TextButton(
                 child: const Text('EDIT'),
-                onPressed: () {
-                  /* ... */
-                },
+                onPressed: onEdit,
               ),
               const SizedBox(width: 8),
             ],

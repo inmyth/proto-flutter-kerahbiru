@@ -16,9 +16,11 @@ Uses **Provided**design pattern. Guides:
     - setState will trigger rebuild on any widget that holds reference to the data.
     - parent-child relations : parent cannot call child but triggers change due to child using parent (widget.) [read](https://stackoverflow.com/questions/48481590/how-to-set-update-state-of-statefulwidget-from-other-statefulwidget-in-flutter)
 - semi-optimistic approach A
-    - upload object
-    - object is assumed live
-    - in main page, do reload to fetch data from API
+    - consider two pages: main, ephemeral
+    - main pages fetch data from repo, stores it in local.
+    - ephemeral pages use local data. any rest interaction here is assumed successful and modifies local data.
+    - in main page, do reload to refetch data from API
+    - requires back intercept positioning
 ```
   Profile -> sends a copy of experience list to -> Edit Profile -> opens a -> New Profile
 
@@ -32,8 +34,11 @@ Uses **Provided**design pattern. Guides:
 - reload page depending on new updates
     - updating state object in State (ChangeNotifier) triggers any Selector that monitors it
     - use WillPopScope to intercept device's back button
+- pages that depend on same inheritance object should be generalized (see CommonItem)
 
 ## Todo
+- [x] complete prototype of approach A (Experience item)
+    - complete ir for the rest of the items
 - [x] reload if new updates
 - date picker for exp end date
     - [x] has upper limit(a month before now) and lower limit

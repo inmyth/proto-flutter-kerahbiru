@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/app_drawer.dart';
-import 'package:proto_flutter_kerahbiru/screens/experience_edit_screen.dart';
+import 'package:proto_flutter_kerahbiru/screens/common_item_edit_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
@@ -34,9 +34,9 @@ class ProfileScreen extends StatelessWidget {
                   _ShowcaseCarousel(showcases: profileState.profile.showcases),
                   _About(about: profileState.profile.about),
                   _Common(list: profileState.profile.experiences, title: "Experiences", isAddable: true, obj: Experience()),
-                  _Common(list: profileState.profile.projects, title: "Projects", isAddable: true, obj: Project()),
+                  _Common(list: profileState.profile.projects, title: "Projects", isAddable: false, obj: Project()),
                   _Certification(list: profileState.profile.certifications),
-                  _Common(list: profileState.profile.educations, title: "Education", isAddable: true, obj: Education()),
+                  _Common(list: profileState.profile.educations, title: "Education", isAddable: false, obj: Education()),
                 ]);
               }));
         },
@@ -303,7 +303,7 @@ class _Common extends StatelessWidget {
                   onPressed: () async {
                     if (this.isAddable) {
                       bool isUpdated = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return ExperienceEditScreen(expList: List.of(list), obj: obj);
+                        return CommonItemEditScreen(expList: List.of(list), obj: obj);
                       }));
                       if (isUpdated) {
                         Provider.of<ProfileState>(context, listen: false).loadProfile();
