@@ -31,6 +31,7 @@ Uses **Provided**design pattern. Guides:
 - date in repo is stored as second, currently working date is stored as Integer.MAX
 - reload page depending on new updates
     - updating state object in State (ChangeNotifier) triggers any Selector that monitors it
+    - use WillPopScope to intercept device's back button
 
 ## Todo
 - [x] reload if new updates

@@ -33,10 +33,10 @@ class ProfileScreen extends StatelessWidget {
                   _Head(header: profileState.profile.header),
                   _ShowcaseCarousel(showcases: profileState.profile.showcases),
                   _About(about: profileState.profile.about),
-                  _Common(list: profileState.profile.experiences, title: "Experiences", isAddable: true),
-                  _Common(list: profileState.profile.projects, title: "Projects", isAddable: true),
+                  _Common(list: profileState.profile.experiences, title: "Experiences", isAddable: true, obj: Experience()),
+                  _Common(list: profileState.profile.projects, title: "Projects", isAddable: true, obj: Project()),
                   _Certification(list: profileState.profile.certifications),
-                  _Common(list: profileState.profile.educations, title: "Education", isAddable: true),
+                  _Common(list: profileState.profile.educations, title: "Education", isAddable: true, obj: Education()),
                 ]);
               }));
         },
@@ -279,8 +279,9 @@ class _About extends StatelessWidget {
 }
 
 class _Common extends StatelessWidget {
-  const _Common({this.list, this.title, this.isAddable});
+  const _Common({this.list, this.title, this.isAddable, @required this.obj});
 
+  final CommonItem obj;
   final List<CommonItem> list;
   final String title;
   final isAddable;
@@ -302,7 +303,7 @@ class _Common extends StatelessWidget {
                   onPressed: () async {
                     if (this.isAddable) {
                       bool isUpdated = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return ExperienceEditScreen(expList: List.of(list));
+                        return ExperienceEditScreen(expList: List.of(list), obj: obj);
                       }));
                       if (isUpdated) {
                         Provider.of<ProfileState>(context, listen: false).loadProfile();

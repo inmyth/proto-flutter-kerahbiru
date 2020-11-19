@@ -10,8 +10,9 @@ import 'package:provider/provider.dart';
 class ExperienceEditScreen extends StatefulWidget {
   final String profileId;
   final List<CommonItem> expList;
+  final CommonItem obj;
 
-  const ExperienceEditScreen({this.profileId, this.expList}) : super(key: Keys.editExperienceScreen);
+  const ExperienceEditScreen({this.profileId, this.expList, this.obj}) : super(key: Keys.editExperienceScreen);
 
   @override
   State<StatefulWidget> createState() => _ExperienceEditScreen(profileId, expList);
@@ -22,46 +23,76 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
   final List<CommonItem> _expList;
   bool _isUpdated = false;
 
+  String _title;
+  String _emptyMsg;
+  Function(ProfileState, int) _deleteFromState;
+  Function(ProfileState, CommonItem) _createInState;
+  Function(Map) _buildItem;
+
   _ExperienceEditScreen(this._profileId, this._expList);
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    if (widget.obj is Experience) {
+      _title = 'Work Experience';
+      _emptyMsg = 'Add your work experience. Start getting noticed.';
+      _deleteFromState = (state, position) => state.deleteExperience(_profileId, this._expList[position].id);
+      _createInState = (state, item) => state.createExperience(_profileId, item);
+      _buildItem = (values) => new Experience(
+          id: values['id'],
+          title: values['title'],
+          org: values['org'],
+          start: values['start'],
+          end: values['end'],
+          description: values['description']);
+    }
+  }
 
-    return Consumer<ProfileState>(
-      builder: (context, profileState, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("Add new work"),
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(_isUpdated),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return CommonItemForm();
-              }));
-              var newItem = new Experience(
-                  id: res['id'], title: res['title'], org: res['org'], start: res['start'], end: res['end'], description: res['description']);
-              _createItem(newItem);
-              profileState.createExperience(_profileId, newItem);
-              _isUpdated = true;
-            },
-            // tooltip: ArchSampleLocalizations.of(context).addTodo,
-            child: const Icon(Icons.add),
-          ),
-          body: Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-              child: _getTaskListView(),
-              alignment: Alignment(0.0, 0.0),
-            ),
-          ),
-        );
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () {
+        _popToBack(context, _isUpdated);
+        return Future.value(true);
       },
+      child: Consumer<ProfileState>(
+        builder: (context, profileState, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(_title),
+              leading: new IconButton(
+                icon: new Icon(Icons.arrow_back),
+                onPressed: () => _popToBack(context, _isUpdated),
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () async {
+                final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return CommonItemForm();
+                }));
+                var newItem = _buildItem(res);
+                _createInState(profileState, newItem);
+                _createItem(newItem);
+                _isUpdated = true;
+              },
+              // tooltip: ArchSampleLocalizations.of(context).addTodo,
+              child: const Icon(Icons.add),
+            ),
+            body: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                child: _getTaskListView(),
+                alignment: Alignment(0.0, 0.0),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
+
+  void _popToBack(BuildContext context, bool isUpdated) => Navigator.of(context).pop(isUpdated);
 
   void _removeItem(int index) {
     setState(() {
@@ -83,15 +114,16 @@ class _ExperienceEditScreen extends State<ExperienceEditScreen> {
               return _ExpCard(
                   item: this._expList[position],
                   onDelete: () {
-                    Provider.of<ProfileState>(context, listen: false).deleteExperience(_profileId, this._expList[position].id);
+                    _deleteFromState(Provider.of<ProfileState>(context, listen: false), position);
                     _removeItem(position);
+                    _isUpdated = true;
                   });
             })
         : Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Mulai tambahkan pengalaman kerja Anda. ',
+                _emptyMsg,
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 22.0),
                 textAlign: TextAlign.center,
               ),
@@ -132,10 +164,9 @@ class _ExpCard extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.red,
                     )),
-                onPressed: () => showConfirmDialog(
-                        context, "Delete experience ?", "This item will be permanently deleted", "YES, DELETE IT", "CANCEL",
-                        isRedYes: true)
-                    .then((v) => v == ButtonResult.ok ? this.onDelete.call() : null),
+                onPressed: () =>
+                    showConfirmDialog(context, 'Confirm Delete', 'This item will be permanently deleted', 'YES, DELETE IT', 'CANCEL', isRedYes: true)
+                        .then((v) => v == ButtonResult.ok ? this.onDelete.call() : null),
               ),
               const SizedBox(width: 8),
               TextButton(
