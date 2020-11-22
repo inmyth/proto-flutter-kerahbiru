@@ -77,7 +77,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
                 //   return CommonItemForm();
                 // }));
-                final Map res = {'title': 'abc', 'org': 'aded', 'start': DateTime.utc(2019, 6, 6), 'end': DateTime.utc(2019, 7, 6), 'description': null};
+                final Map res = {'id' : 33, 'title': 'abc', 'org': 'aded', 'start': DateTime.utc(2019, 6, 6), 'end': DateTime.utc(2019, 7, 6), 'description': ''};
 
                 _onNewItem(profileState, res);
                 _isUpdated = true;
@@ -161,7 +161,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
         ? SafeArea(
           child: AnimatedList(
               key: _listKey,
-              initialItemCount: _expList.length,
+              initialItemCount: _expList.length ,
               itemBuilder: (context, position, animation) {
                 return FadeTransition(
                   opacity: animation,
@@ -192,7 +192,7 @@ class _ExpCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      key: ValueKey<CommonItem>(item),
+      // key: ValueKey<CommonItem>(item),
       color: Colors.white,
       elevation: 2.0,
       child: Padding(
