@@ -73,11 +73,14 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return CommonItemForm();
-                }));
+              onPressed: () {
+                // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                //   return CommonItemForm();
+                // }));
+                final Map res = {'title': 'abc', 'org': 'aded', 'start': DateTime.utc(2019, 6, 6), 'end': DateTime.utc(2019, 7, 6), 'description': null};
+
                 _onNewItem(profileState, res);
+                _isUpdated = true;
               },
               // tooltip: ArchSampleLocalizations.of(context).addTodo,
               child: const Icon(Icons.add),
@@ -97,52 +100,75 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
 
   void _popToBack(BuildContext context, bool isUpdated) => Navigator.of(context).pop(isUpdated);
 
-  void onRemoved(int index) {
+  void _onRemoved(int index) {
     setState(() {
       _expList.removeAt(index);
+
+      _listKey.currentState.removeItem(
+        index, (context, animation) {
+          return FadeTransition(
+            opacity: CurvedAnimation(parent: animation, curve: Interval(0.5, 1.0)),
+            child: SizeTransition(
+              sizeFactor:
+              CurvedAnimation(parent: animation, curve: Interval(0.0, 1.0)),
+              axisAlignment: 0.0,
+              child: _buildListItem(null, index),
+            ),
+          );
+        },
+        duration: Duration(milliseconds: 600),
+      );
     });
   }
 
   void _onNewItem(ProfileState state, Map res) {
     var newItem = _buildItem(res);
     _createInState(state, newItem);
-    _isUpdated = true;
     setState(() {
-      _expList.removeWhere((element) => element.id == newItem.id);
-      _expList.add(newItem);
-      _expList.sort((a,b) => a.id - b.id);
+      _expList.insert(0, newItem);
+      _listKey.currentState.insertItem(0, duration: Duration(milliseconds: 1300));
     });
   }
 
   void _onEdited(ProfileState state, Map res, int position){
     var editedItem = _buildItem(res);
     _createInState(state, editedItem);
-    _isUpdated = true;
     setState(() {
       _expList[position] = editedItem;
     });
   }
 
+  Widget _buildListItem(ProfileState state, int position){
+    return _ExpCard(
+      item: this._expList[position],
+      onDelete: () {
+        _deleteFromState(state, position);
+        _onRemoved(position);
+        _isUpdated = true;
+      },
+      onEdit: () async {
+        final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return CommonItemForm(model: this._expList[position]);
+        }));
+        _onEdited(state, res, position);
+        _isUpdated = true;
+      },
+    );
+  }
+
   Widget _buildMainView(ProfileState state) {
     return _expList.isNotEmpty
-        ? ListView.builder(
-            itemCount: _expList.length,
-            itemBuilder: (BuildContext context, int position) {
-              return _ExpCard(
-                item: this._expList[position],
-                onDelete: () {
-                  _deleteFromState(state, position);
-                  onRemoved(position);
-                  _isUpdated = true;
-                },
-                onEdit: () async {
-                  final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return CommonItemForm(model: this._expList[position]);
-                  }));
-                  _onEdited(state, res, position);
-                },
-              );
-            })
+        ? SafeArea(
+          child: AnimatedList(
+              key: _listKey,
+              initialItemCount: _expList.length,
+              itemBuilder: (context, position, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: _buildListItem(state, position)
+                );
+              }),
+        )
         : Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -166,6 +192,7 @@ class _ExpCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      key: ValueKey<CommonItem>(item),
       color: Colors.white,
       elevation: 2.0,
       child: Padding(
