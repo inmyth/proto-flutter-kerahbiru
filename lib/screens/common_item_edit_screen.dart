@@ -31,12 +31,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
 
   _ExperienceEditScreen(this._profileId, this._expList);
 
-  void effectBuildItem(ProfileState state, Map res) {
-    var newItem = _buildItem(res);
-    _createInState(state, newItem);
-    _createItem(newItem);
-    _isUpdated = true;
-  }
+
 
   @override
   void initState() {
@@ -81,7 +76,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
                   return CommonItemForm();
                 }));
-                effectBuildItem(profileState, res);
+                _onNewItem(profileState, res);
               },
               // tooltip: ArchSampleLocalizations.of(context).addTodo,
               child: const Icon(Icons.add),
@@ -101,17 +96,29 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
 
   void _popToBack(BuildContext context, bool isUpdated) => Navigator.of(context).pop(isUpdated);
 
-  void _removeItem(int index) {
+  void onRemoved(int index) {
     setState(() {
       _expList.removeAt(index);
     });
   }
 
-  void _createItem(Experience newItem) {
+  void _onNewItem(ProfileState state, Map res) {
+    var newItem = _buildItem(res);
+    _createInState(state, newItem);
+    _isUpdated = true;
     setState(() {
       _expList.removeWhere((element) => element.id == newItem.id);
       _expList.add(newItem);
       _expList.sort((a,b) => a.id - b.id);
+    });
+  }
+
+  void _onEdited(ProfileState state, Map res, int position){
+    var editedItem = _buildItem(res);
+    _createInState(state, editedItem);
+    _isUpdated = true;
+    setState(() {
+      _expList[position] = editedItem;
     });
   }
 
@@ -124,14 +131,14 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 item: this._expList[position],
                 onDelete: () {
                   _deleteFromState(state, position);
-                  _removeItem(position);
+                  onRemoved(position);
                   _isUpdated = true;
                 },
                 onEdit: () async {
                   final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
                     return CommonItemForm(model: this._expList[position]);
                   }));
-                  effectBuildItem(state, res);
+                  _onEdited(state, res, position);
                 },
               );
             })
