@@ -84,7 +84,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
             body: Center(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                child: _getTaskListView(profileState),
+                child: _buildListItem(profileState),
                 alignment: Alignment(0.0, 0.0),
               ),
             ),
@@ -122,7 +122,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
     });
   }
 
-  Widget _getTaskListView(ProfileState state) {
+  Widget _buildListItem(ProfileState state) {
     return _expList.isNotEmpty
         ? ListView.builder(
             itemCount: _expList.length,
