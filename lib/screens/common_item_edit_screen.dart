@@ -22,6 +22,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
   final String _profileId;
   final List<CommonItem> _expList;
   bool _isUpdated = false;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
 
   String _title;
   String _emptyMsg;
@@ -84,7 +85,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
             body: Center(
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-                child: _buildListItem(profileState),
+                child: _buildMainView(profileState),
                 alignment: Alignment(0.0, 0.0),
               ),
             ),
@@ -122,7 +123,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
     });
   }
 
-  Widget _buildListItem(ProfileState state) {
+  Widget _buildMainView(ProfileState state) {
     return _expList.isNotEmpty
         ? ListView.builder(
             itemCount: _expList.length,
