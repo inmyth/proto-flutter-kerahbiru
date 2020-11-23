@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
@@ -55,150 +56,150 @@ class _Head extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-      children: [
-        Stack(children: <Widget>[
-          Container(
-            height: 250.0,
-            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(header.backgroundUrl), fit: BoxFit.cover)),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: circleRadius / 2.0,
-                  ),
-
-                  ///here we create space for the circle avatar to get ut of the box
-                  child: Container(
-                    height: 250.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                          offset: Offset(0.0, 5.0),
-                        ),
-                      ],
-                    ),
-                    width: double.infinity,
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: circleRadius / 2,
-                            ),
-                            Text(
-                              header.name,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34.0),
-                            ),
-                            Text(
-                              header.toResidenceString(),
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.lightBlueAccent),
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                              child: Text(header.summary,
-                                  textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w300, height: 2.0, fontSize: 16.0)),
-                            )
-                          ],
-                        )),
-                  ),
-                ),
-
-                ///Image Avatar
-                Container(
-                  width: circleRadius,
-                  height: circleRadius,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8.0,
-                        offset: Offset(0.0, 5.0),
+          children: [
+            Stack(children: <Widget>[
+              Container(
+                height: 250.0,
+                decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(header.backgroundUrl), fit: BoxFit.cover)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: circleRadius / 2.0,
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Center(
+
+                      ///here we create space for the circle avatar to get ut of the box
                       child: Container(
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(header.avatarUrl),
-                          radius: 50.0,
+                        height: 250.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8.0,
+                              offset: Offset(0.0, 5.0),
+                            ),
+                          ],
                         ),
-
-                        /// replace your image with the Icon
+                        width: double.infinity,
+                        child: Padding(
+                            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: circleRadius / 2,
+                                ),
+                                Text(
+                                  header.name,
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34.0),
+                                ),
+                                Text(
+                                  header.toResidenceString(),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Colors.lightBlueAccent),
+                                ),
+                                SizedBox(
+                                  height: 30.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                                  child: Text(header.summary,
+                                      textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w300, height: 2.0, fontSize: 16.0)),
+                                )
+                              ],
+                            )),
                       ),
                     ),
-                  ),
+
+                    ///Image Avatar
+                    Container(
+                      width: circleRadius,
+                      height: circleRadius,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8.0,
+                            offset: Offset(0.0, 5.0),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Center(
+                          child: Container(
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(header.avatarUrl),
+                              radius: 50.0,
+                            ),
+
+                            /// replace your image with the Icon
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+            ]),
+            SizedBox(
+              height: 20.0,
             ),
-          ),
-        ]),
-        SizedBox(
-          height: 20.0,
-        ),
-      ],
-    ));
+          ],
+        ));
   }
 }
 
 List<Widget> _buildSliders(BuildContext context, List<Showcase> showcases) {
   return showcases
       .map((item) => GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return _ShowcaseImageScreen(item.url);
-              }));
-            },
-            child: Container(
-              child: Container(
-                margin: EdgeInsets.all(5.0),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Stack(
-                      children: <Widget>[
-                        Image.network(item.url, fit: BoxFit.cover, width: 1000.0),
-                        Positioned(
-                          bottom: 0.0,
-                          left: 0.0,
-                          right: 0.0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                            child: Text(
-                              'No. ${showcases.indexOf(item)} image',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
-            ),
-          ))
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (_) {
+        return _ShowcaseImageScreen(item.url);
+      }));
+    },
+    child: Container(
+      child: Container(
+        margin: EdgeInsets.all(5.0),
+        child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            child: Stack(
+              children: <Widget>[
+                Image.network(item.url, fit: BoxFit.cover, width: 1000.0),
+                Positioned(
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                    child: Text(
+                      'No. ${showcases.indexOf(item)} image',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )),
+      ),
+    ),
+  ))
       .toList();
 }
 
@@ -211,20 +212,20 @@ class _ShowcaseCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-      children: <Widget>[
-        CarouselSlider(
-          options: CarouselOptions(
-            autoPlay: true,
-            aspectRatio: 2.0,
-            enlargeCenterPage: true,
-          ),
-          items: _buildSliders(context, showcases),
-        ),
-        SizedBox(
-          height: 20.0,
-        ),
-      ],
-    ));
+          children: <Widget>[
+            CarouselSlider(
+              options: CarouselOptions(
+                autoPlay: true,
+                aspectRatio: 2.0,
+                enlargeCenterPage: true,
+              ),
+              items: _buildSliders(context, showcases),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+          ],
+        ));
   }
 }
 
@@ -281,10 +282,13 @@ class _About extends StatelessWidget {
 class _Common extends StatelessWidget {
   const _Common({this.list, this.title, this.isAddable, @required this.obj});
 
+  final double _fabDimension = 56.0;
   final CommonItem obj;
   final List<CommonItem> list;
   final String title;
   final isAddable;
+
+  final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
 
   @override
   Widget build(BuildContext context) {
@@ -296,23 +300,33 @@ class _Common extends StatelessWidget {
           Container(
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text(this.title, style: TextStyle(fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
-              GestureDetector(
-                child: IconButton(
-                  icon: Icon(Icons.add),
-                  tooltip: 'Add experience',
-                  onPressed: () async {
-                    if (this.isAddable) {
-                      bool isUpdated = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return CommonItemEditScreen(expList: List.of(list), obj: obj);
-                      }));
-                      if (isUpdated) {
-                        Provider.of<ProfileState>(context, listen: false).loadProfile();
-                      }
-                    } else {
-                      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Lagi dibuat')));
-                    }
-                  },
-                ),
+              this.isAddable
+                  ? OpenContainer(
+                transitionType: _transitionType,
+                closedColor: Theme.of(context).canvasColor,
+                closedElevation: 0.0,
+                openElevation: 20.0,
+                transitionDuration: Duration(milliseconds: 800),
+                closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                  return GestureDetector(
+                    child: IconButton(icon: Icon(Icons.add), tooltip: 'Add experience', onPressed: openContainer),
+                  );
+                },
+                openBuilder: (BuildContext _, VoidCallback openContainer) {
+                  return CommonItemEditScreen(expList: List.of(list), obj: obj);
+                },
+                onClosed: (isUpdated) {
+                  if(isUpdated){
+                    Provider.of<ProfileState>(context, listen: false).loadProfile();
+                  }
+                },
+              )
+                  : IconButton(
+                icon: Icon(Icons.add),
+                tooltip: 'Add experience',
+                onPressed: () {
+                  Scaffold.of(context).showSnackBar(SnackBar(content: Text('Lagi dibuat')));
+                },
               ),
             ]),
           ),
@@ -352,6 +366,7 @@ class _CommonListItem extends StatelessWidget {
     );
   }
 }
+
 
 class _Certification extends StatelessWidget {
   final List<Certification> list;
