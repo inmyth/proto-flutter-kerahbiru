@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
-import 'package:proto_flutter_kerahbiru/screens/common_item_form_screen.dart';
+import 'package:proto_flutter_kerahbiru/screens/common_item_form.dart';
 import 'package:proto_flutter_kerahbiru/screens/common_item_stepper.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';

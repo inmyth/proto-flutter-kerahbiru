@@ -9,16 +9,9 @@ class CommonItemOnboarding extends StatefulWidget {
 class _CommonItemOnboardingState extends State<CommonItemOnboarding> {
   _CommonItemOnboardingState();
 
-  final _formKeyTitle = GlobalKey<FormState>();
   final Map values = {'title': null, 'org': null, 'start': null, 'end': null, 'description': null};
-
-  final List<StepState> stepStates = [
-    StepState.indexed,
-    StepState.indexed,
-    StepState.indexed,
-    StepState.indexed,
-    StepState.indexed,
-  ];
+  final _formKeys = [GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>(), GlobalKey<FormState>()];
+  final stepStates = List<StepState>.filled(5, StepState.indexed);
   int _currentStep = 0;
   bool _complete = false;
 
@@ -30,12 +23,12 @@ class _CommonItemOnboardingState extends State<CommonItemOnboarding> {
       if (_currentStep == 0) {
         stepStates[0] = StepState.complete;
         _currentStep = 1;
-      } else if (_currentStep == 1) {
-        var form = _formKeyTitle.currentState;
+      } else if (_currentStep > 0 && _currentStep < stepStates.length) {
+        var form = _formKeys[_currentStep - 1].currentState;
         if (form.validate()) {
           form.save();
           stepStates[_currentStep] = StepState.complete;
-          _currentStep = 2;
+          _currentStep = _currentStep + 1;
         } else {
           stepStates[_currentStep] = StepState.error;
         }
@@ -110,7 +103,7 @@ class _CommonItemOnboardingState extends State<CommonItemOnboarding> {
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0),
                     textAlign: TextAlign.start,
                   ),
-                  Form(key: _formKeyTitle, child: TitleField(initialValue: null, onSaved: (v) => values['title'] = v))
+                  Form(key: _formKeys[0], child: TitleField(initialValue: null, onSaved: (v) => values['title'] = v))
                 ],
               ),
             ),
@@ -125,22 +118,22 @@ class _CommonItemOnboardingState extends State<CommonItemOnboarding> {
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0),
                     textAlign: TextAlign.start,
                   ),
-                  TitleField(initialValue: null, onSaved: (v) => values['org'] = v)
+                  Form(key: _formKeys[1], child: TitleField(initialValue: null, onSaved: (v) => values['org'] = v))
                 ],
               ),
             ),
             Step(
-              title: const Text('Address'),
+              title: const Text('Period'),
               isActive: true,
               state: stepStates[3],
               content: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Home Address'),
+                  Text(
+                    'Choose the starting date and end date of this job. If you are still working here then please mark the checkbox',
+                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0),
+                    textAlign: TextAlign.start,
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Postcode'),
-                  ),
+                  Form(key: _formKeys[2], child: StartEndDates(onSavedStart: (v) => values['start'] = v, onSavedEnd: (v) => values['end'] = v))
                 ],
               ),
             ),

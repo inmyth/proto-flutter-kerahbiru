@@ -131,6 +131,8 @@ class StartEndDates extends StatefulWidget {
 class _StartEndDatesState extends State<StartEndDates> {
   _StartEndDatesState();
 
+  final int _maxEpochMillis = Consts.maxInt * 1000;
+
   DateFormat dateFormat = Formats.formDateFormat;
   bool _isCurrentlyWorking;
 
@@ -146,7 +148,7 @@ class _StartEndDatesState extends State<StartEndDates> {
     super.initState();
     _startController = new TextEditingController();
     _endController = new TextEditingController();
-    _isCurrentlyWorking = (widget.end != null && (widget.end.millisecondsSinceEpoch / 1000 == Consts.maxInt)) ? true : false;
+    _isCurrentlyWorking = (widget.end != null && (widget.end.millisecondsSinceEpoch == _maxEpochMillis)) ? true : false;
     _startValidator = (v) {
       if (v.isEmpty) {
         return "Start Date required";
@@ -171,7 +173,7 @@ class _StartEndDatesState extends State<StartEndDates> {
     };
 
     _onSavedEnd = (v) {
-      widget.values['end'] = _isCurrentlyWorking ? DateTime.fromMillisecondsSinceEpoch(Consts.maxInt * 1000) : dateFormat.parse(v);
+      widget.values['end'] = _isCurrentlyWorking ? DateTime.fromMillisecondsSinceEpoch(_maxEpochMillis) : dateFormat.parse(v);
     };
   }
 
@@ -247,6 +249,7 @@ class _DateField extends StatefulWidget {
 
 class _DateFieldState extends State<_DateField> {
   final DateFormat _dateFormat = Formats.formDateFormat;
+  final int _maxEpochMillis = Consts.maxInt * 1000;
   final _now = DateTime.now();
   DateTime _input;
 
@@ -266,7 +269,8 @@ class _DateFieldState extends State<_DateField> {
     });
   }
 
-  void _initController(DateTime input) => widget.controller.text = input != null ? _dateFormat.format(input) : '';
+  void _initController(DateTime input) =>
+      widget.controller.text = input == null || input.millisecondsSinceEpoch == _maxEpochMillis ? '' : _dateFormat.format(input);
 
   // @override
   // void dispose() {
