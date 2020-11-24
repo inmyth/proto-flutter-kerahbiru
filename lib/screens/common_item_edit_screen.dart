@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/common_item_form_screen.dart';
+import 'package:proto_flutter_kerahbiru/screens/common_item_stepper.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
@@ -31,8 +32,6 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
   Function(Map) _buildItem;
 
   _ExperienceEditScreen(this._profileId, this._expList);
-
-
 
   @override
   void initState() {
@@ -74,10 +73,13 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return CommonItemForm();
+                Navigator.push(context, MaterialPageRoute(builder: (_){
+                  return CommonItemOnboarding();
                 }));
-                _onNewItem(profileState, res);
+                // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                //   return CommonItemForm();
+                // }));
+                // _onNewItem(profileState, res);
               },
               // tooltip: ArchSampleLocalizations.of(context).addTodo,
               child: const Icon(Icons.add),
