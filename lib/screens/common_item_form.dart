@@ -5,21 +5,20 @@ import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/screens/consts.dart';
 import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
-import 'dart:math';
 
 class CommonItemForm extends StatelessWidget {
   final CommonItem initialModel;
-  final Map values = {'title': null, 'org': null, 'start': null, 'end': null, 'description': null};
+  final Map _values = {'title': null, 'org': null, 'start': null, 'end': null, 'description': null};
 
   final _formKey = GlobalKey<FormState>();
 
-  CommonItemForm({Key key, this.initialModel}) : super(key: key);
+  CommonItemForm({Key key, @required this.initialModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('New Work Experience'),
+          title: Text('Edit Work Experience'),
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
@@ -45,7 +44,7 @@ class CommonItemForm extends StatelessWidget {
                     return null;
                   },
                   onSaved: (v) {
-                    values['title'] = v;
+                    _values['title'] = v;
                   },
                 ),
                 SizedBox(
@@ -66,7 +65,7 @@ class CommonItemForm extends StatelessWidget {
                     return null;
                   },
                   onSaved: (v) {
-                    values['org'] = v;
+                    _values['org'] = v;
                   },
                 ),
                 SizedBox(
@@ -75,7 +74,7 @@ class CommonItemForm extends StatelessWidget {
                 StartEndDates(
                   start: initialModel?.start,
                   end: initialModel?.end,
-                  values: values,
+                  values: _values,
                 ),
                 TextFormField(
                   minLines: 5,
@@ -91,22 +90,34 @@ class CommonItemForm extends StatelessWidget {
                     return null;
                   },
                   onSaved: (v) {
-                    values['description'] = v;
+                    _values['description'] = v;
                   },
                 ),
                 Builder(
                   builder: (context) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: RaisedButton(
-                      onPressed: () {
-                        var form = _formKey.currentState;
-                        if (form.validate()) {
-                          form.save();
-                          values['id'] = initialModel?.id ?? new Random().nextInt(1000);
-                          Navigator.pop(context, values);
-                        }
-                      },
-                      child: Text('Submit'),
+                    child: ButtonBar(
+                      children: <Widget>[
+                        RaisedButton(
+                          color: Colors.blue,
+                          onPressed: () {
+                            var form = _formKey.currentState;
+                            if (form.validate()) {
+                              form.save();
+                              _values['id'] = initialModel.id;
+                              var editedModel = new Experience(
+                                  id: initialModel.id,
+                                  title: _values['title'],
+                                  org: _values['org'],
+                                  start: _values['start'],
+                                  end: _values['end'],
+                                  description: _values['description']);
+                              Navigator.pop(context, editedModel);
+                            }
+                          },
+                          child: const Text('FINISH', style: TextStyle(fontSize: 16, color: Colors.white)),
+                        )
+                      ],
                     ),
                   ),
                 ),

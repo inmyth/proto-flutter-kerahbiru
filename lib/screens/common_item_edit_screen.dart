@@ -33,8 +33,6 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
   String _emptyMsg;
   Function(ProfileState, int) _deleteFromState;
   Function(ProfileState, CommonItem) _createInState;
-  // Function(Map) _buildItem;
-
   _ExperienceEditScreen(this._profileId, this._expList);
 
   @override
@@ -45,13 +43,6 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
       _emptyMsg = 'Add your work experience. Start getting noticed.';
       _deleteFromState = (state, position) => state.deleteExperience(_profileId, this._expList[position].id);
       _createInState = (state, item) => state.createExperience(_profileId, item);
-      // _buildItem = (values) => new Experience(
-      //     id: values['id'],
-      //     title: values['title'],
-      //     org: values['org'],
-      //     start: values['start'],
-      //     end: values['end'],
-      //     description: values['description']);
     } else {
       _title = 'error';
       _emptyMsg = 'unknown common item type';
@@ -75,19 +66,6 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 onPressed: () => _popToBack(context, _isUpdated),
               ),
             ),
-            // floatingActionButton: FloatingActionButton(
-            //   onPressed: () async {
-            //     Navigator.push(context, MaterialPageRoute(builder: (_){
-            //       return CommonItemOnboarding();
-            //     }));
-            //     // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-            //     //   return CommonItemForm();
-            //     // }));
-            //     // _onNewItem(profileState, res);
-            //   },
-            //   // tooltip: ArchSampleLocalizations.of(context).addTodo,
-            //   child: const Icon(Icons.add),
-            // ),
             floatingActionButton: OpenContainer(
               transitionType: _transitionType,
               transitionDuration: Duration(milliseconds: 800),
@@ -96,7 +74,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 return CommonItemOnboarding(reservedItemId: reservedItemId);
               },
               onClosed: (createdItem) {
-                if(createdItem != null){
+                if (createdItem != null) {
                   _onNewItem(profileState, createdItem);
                 }
               },
@@ -148,11 +126,11 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
     setState(() {
       _expList.removeWhere((element) => element.id == createdItem.id);
       _expList.add(createdItem);
-      _expList.sort((a,b) => a.id - b.id);
+      _expList.sort((a, b) => a.id - b.id);
     });
   }
 
-  void _onEdited(ProfileState state, CommonItem editedItem, int position){
+  void _onEdited(ProfileState state, CommonItem editedItem, int position) {
     // var editedItem = _buildItem(res);
     _createInState(state, editedItem);
     _isUpdated = true;
@@ -173,11 +151,11 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                   onRemoved(position);
                   _isUpdated = true;
                 },
-                onEdit: () async {
-                  // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  //   return CommonItemForm(initialModel: this._expList[position]);
-                  // }));
-                  // _onEdited(state, res, position);
+                onItemEdited: (editedModel) {
+                  _onEdited(state, editedModel, position);
+                },
+                onOpenBuilder: () {
+                  return CommonItemForm(initialModel: this._expList[position]);
                 },
               );
             })
@@ -195,11 +173,16 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
 }
 
 class _ExpCard extends StatelessWidget {
+  final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
+
   final CommonItem item;
   final VoidCallback onDelete;
-  final Function onEdit;
 
-  const _ExpCard({@required this.item, @required this.onDelete, @required this.onEdit});
+  // final Function onEdit;
+  final onOpenBuilder;
+  final onItemEdited;
+
+  const _ExpCard({@required this.item, @required this.onDelete, this.onOpenBuilder, this.onItemEdited});
 
   @override
   Widget build(BuildContext context) {
@@ -232,9 +215,24 @@ class _ExpCard extends StatelessWidget {
                         .then((v) => v == ButtonResult.ok ? this.onDelete.call() : null),
               ),
               const SizedBox(width: 8),
-              TextButton(
-                child: const Text('EDIT'),
-                onPressed: onEdit,
+              OpenContainer(
+                transitionType: _transitionType,
+                closedColor: Theme.of(context).cardColor,
+                closedElevation: 0.0,
+                openElevation: 4.0,
+                transitionDuration: Duration(milliseconds: 400),
+                closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                  return GestureDetector(
+                    child: TextButton(
+                      child: const Text('EDIT'),
+                      onPressed: openContainer,
+                    ),
+                  );
+                },
+                openBuilder: (BuildContext _, VoidCallback openContainer) {
+                  return onOpenBuilder();
+                },
+                onClosed: (editedModel) => onItemEdited(editedModel),
               ),
               const SizedBox(width: 8),
             ],

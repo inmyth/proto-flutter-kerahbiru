@@ -42,10 +42,10 @@ Uses **Provided**design pattern. Guides:
 - [x] reload if new updates
 - [x] page animation proto (profile -> edit)
 - [x] page animation (edit -> new)
-- page animation (edit -> form)
-- refactor edit returned models
-- refactor extracted views
-- date picker for exp end date
+- [x] page animation (edit -> form)
+- [x] refactor edit returned models
+- refactor extract views
+- [x] date picker for exp end date
     - [x] has upper limit(a month before now) and lower limit
     - [x] "currently working" checkbox will disable End Date and its date picker
     - [x] validates start date < end date
