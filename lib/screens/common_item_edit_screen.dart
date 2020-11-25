@@ -139,7 +139,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 },
                 onEdit: () async {
                   final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return CommonItemForm(model: this._expList[position]);
+                    return CommonItemForm(initialModel: this._expList[position]);
                   }));
                   _onEdited(state, res, position);
                 },

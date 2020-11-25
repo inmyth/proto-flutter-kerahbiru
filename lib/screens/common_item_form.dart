@@ -8,12 +8,12 @@ import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 import 'dart:math';
 
 class CommonItemForm extends StatelessWidget {
-  final CommonItem model;
+  final CommonItem initialModel;
   final Map values = {'title': null, 'org': null, 'start': null, 'end': null, 'description': null};
 
   final _formKey = GlobalKey<FormState>();
 
-  CommonItemForm({Key key, this.model}) : super(key: key);
+  CommonItemForm({Key key, this.initialModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class CommonItemForm extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
-                  initialValue: model?.title ?? '',
+                  initialValue: initialModel?.title ?? '',
                   decoration: const InputDecoration(
                     hintText: '',
                     labelText: 'Posisi',
@@ -52,7 +52,7 @@ class CommonItemForm extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
-                  initialValue: model?.org ?? '',
+                  initialValue: initialModel?.org ?? '',
                   decoration: const InputDecoration(
                     hintText: '',
                     labelText: 'Company',
@@ -73,14 +73,14 @@ class CommonItemForm extends StatelessWidget {
                   height: 10,
                 ),
                 StartEndDates(
-                  start: model?.start,
-                  end: model?.end,
+                  start: initialModel?.start,
+                  end: initialModel?.end,
                   values: values,
                 ),
                 TextFormField(
                   minLines: 5,
                   maxLines: 8,
-                  initialValue: model?.description ?? '',
+                  initialValue: initialModel?.description ?? '',
                   decoration: const InputDecoration(
                     labelText: 'Description (optional)',
                   ),
@@ -102,7 +102,7 @@ class CommonItemForm extends StatelessWidget {
                         var form = _formKey.currentState;
                         if (form.validate()) {
                           form.save();
-                          values['id'] = model?.id ?? new Random().nextInt(1000);
+                          values['id'] = initialModel?.id ?? new Random().nextInt(1000);
                           Navigator.pop(context, values);
                         }
                       },

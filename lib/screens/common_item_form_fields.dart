@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/screens/consts.dart';
 import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 
-
 class TitleField extends StatefulWidget {
   final String initialValue;
   final Function(String) onSaved;
-
 
   const TitleField({Key key, @required this.initialValue, @required this.onSaved}) : super(key: key);
 
@@ -20,6 +17,7 @@ class TitleField extends StatefulWidget {
 
 class _TitleFieldState extends State<TitleField> {
   final int _maxLength = Consts.titleMaxLength;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -71,7 +69,42 @@ class _OrgFieldState extends State<OrgField> {
         return null;
       },
       onSaved: widget.onSaved,
-    );  }
+    );
+  }
+}
+
+class DescriptionField extends StatefulWidget {
+  final String initialValue;
+  final Function(String) onSaved;
+
+  const DescriptionField({Key key, this.initialValue, this.onSaved}) : super(key: key);
+
+  @override
+  _DescriptionFieldState createState() => _DescriptionFieldState();
+}
+
+class _DescriptionFieldState extends State<DescriptionField> {
+  final int _maxLength = Consts.descriptionMaxLength;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      minLines: 5,
+      maxLines: 12,
+      initialValue: widget.initialValue ?? '',
+      decoration: const InputDecoration(
+        hintText: '',
+        labelText: 'Description(optional)',
+      ),
+      validator: (value) {
+        if (value.length > _maxLength) {
+          return 'Input cannot exceed $_maxLength characters';
+        }
+        return null;
+      },
+      onSaved: widget.onSaved,
+    );
+  }
 }
 
 class StartEndDates extends StatefulWidget {
@@ -79,7 +112,6 @@ class StartEndDates extends StatefulWidget {
   final DateTime initialEnd;
   final Function(DateTime) onSavedStart;
   final Function(DateTime) onSavedEnd;
-
 
   const StartEndDates({Key key, this.initialStart, this.initialEnd, this.onSavedStart, this.onSavedEnd}) : super(key: key);
 
@@ -128,7 +160,6 @@ class _StartEndDatesState extends State<StartEndDates> {
     _onSavedStart = (v) => widget.onSavedStart(dateFormat.parse(v));
 
     _onSavedEnd = (v) => widget.onSavedEnd(_isCurrentlyWorking ? DateTime.fromMillisecondsSinceEpoch(Consts.maxInt * 1000) : dateFormat.parse(v));
-
   }
 
   // @override
@@ -169,7 +200,7 @@ class _StartEndDatesState extends State<StartEndDates> {
           onSaved: _onSavedEnd,
           validator: _endValidator,
         ),
-        CheckboxFormField(
+        _CheckboxFormField(
           title: Text('Is currently working here ?'),
           initialValue: _isCurrentlyWorking,
           onChecked: _updateCurrentlyWorking,
@@ -189,12 +220,12 @@ class _DateField extends StatefulWidget {
 
   const _DateField(
       {Key key,
-        @required this.label,
-        @required this.isEnabled,
-        @required this.initialValue,
-        @required this.validator,
-        @required this.controller,
-        @required this.onSaved})
+      @required this.label,
+      @required this.isEnabled,
+      @required this.initialValue,
+      @required this.validator,
+      @required this.controller,
+      @required this.onSaved})
       : super(key: key);
 
   @override
@@ -235,16 +266,16 @@ class _DateFieldState extends State<_DateField> {
     return Row(children: <Widget>[
       Expanded(
           child: TextFormField(
-            readOnly: true,
-            onTap: widget.isEnabled ? () => _showPickerDate(context, widget.label, _now, _updateInput) : null,
-            controller: widget.controller,
-            enabled: widget.isEnabled,
-            validator: widget.validator,
-            decoration: InputDecoration(
-              labelText: widget.label,
-            ),
-            onSaved: widget.onSaved,
-          )),
+        readOnly: true,
+        onTap: widget.isEnabled ? () => _showPickerDate(context, widget.label, _now, _updateInput) : null,
+        controller: widget.controller,
+        enabled: widget.isEnabled,
+        validator: widget.validator,
+        decoration: InputDecoration(
+          labelText: widget.label,
+        ),
+        onSaved: widget.onSaved,
+      )),
       IconButton(
         disabledColor: Colors.grey,
         icon: new Icon(Icons.add_box_outlined),
@@ -255,39 +286,39 @@ class _DateFieldState extends State<_DateField> {
   }
 }
 
-class CheckboxFormField extends FormField<bool> {
-  CheckboxFormField(
+class _CheckboxFormField extends FormField<bool> {
+  _CheckboxFormField(
       {Widget title,
-        @required Function(bool) onChecked,
-        FormFieldSetter<bool> onSaved,
-        FormFieldValidator<bool> validator,
-        bool initialValue = false,
-        autovalidateMode = AutovalidateMode.always})
+      @required Function(bool) onChecked,
+      FormFieldSetter<bool> onSaved,
+      FormFieldValidator<bool> validator,
+      bool initialValue = false,
+      autovalidateMode = AutovalidateMode.always})
       : super(
-      onSaved: onSaved,
-      validator: validator,
-      initialValue: initialValue,
-      autovalidateMode: autovalidateMode,
-      builder: (FormFieldState<bool> state) {
-        return CheckboxListTile(
-          dense: state.hasError,
-          title: title,
-          value: state.value,
-          onChanged: (newVal) {
-            state.didChange.call(newVal);
-            onChecked.call(newVal);
-          },
-          subtitle: state.hasError
-              ? Builder(
-            builder: (BuildContext context) => Text(
-              state.errorText,
-              style: TextStyle(color: Theme.of(context).errorColor),
-            ),
-          )
-              : null,
-          controlAffinity: ListTileControlAffinity.leading,
-        );
-      });
+            onSaved: onSaved,
+            validator: validator,
+            initialValue: initialValue,
+            autovalidateMode: autovalidateMode,
+            builder: (FormFieldState<bool> state) {
+              return CheckboxListTile(
+                dense: state.hasError,
+                title: title,
+                value: state.value,
+                onChanged: (newVal) {
+                  state.didChange.call(newVal);
+                  onChecked.call(newVal);
+                },
+                subtitle: state.hasError
+                    ? Builder(
+                        builder: (BuildContext context) => Text(
+                          state.errorText,
+                          style: TextStyle(color: Theme.of(context).errorColor),
+                        ),
+                      )
+                    : null,
+                controlAffinity: ListTileControlAffinity.leading,
+              );
+            });
 }
 
 _showPickerDate(BuildContext context, String title, DateTime now, Function(DateTime) onSelected) {

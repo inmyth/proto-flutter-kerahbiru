@@ -40,6 +40,10 @@ Uses **Provided**design pattern. Guides:
 - [x] complete prototype of approach A (Experience item)
     - complete ir for the rest of the items
 - [x] reload if new updates
+- [x] page animation proto (profile -> edit)
+- page animation (edit -> new or form)
+- refactor edit returned models
+- refactor extracted views
 - date picker for exp end date
     - [x] has upper limit(a month before now) and lower limit
     - [x] "currently working" checkbox will disable End Date and its date picker
