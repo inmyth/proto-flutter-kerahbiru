@@ -3,18 +3,18 @@ import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/screens/common_item_form_fields.dart';
 import 'package:proto_flutter_kerahbiru/screens/common_item_view.dart';
 
-class CommonItemOnboarding extends StatefulWidget {
+class CommonItemStepper extends StatefulWidget {
   final int reservedItemId;
   final onClosed;
 
-  const CommonItemOnboarding({Key key, this.reservedItemId, this.onClosed}) : super(key: key);
+  const CommonItemStepper({Key key, this.reservedItemId, this.onClosed}) : super(key: key);
 
   @override
-  _CommonItemOnboardingState createState() => _CommonItemOnboardingState();
+  _CommonItemStepperState createState() => _CommonItemStepperState();
 }
 
-class _CommonItemOnboardingState extends State<CommonItemOnboarding> {
-  _CommonItemOnboardingState();
+class _CommonItemStepperState extends State<CommonItemStepper> {
+  _CommonItemStepperState();
 
   CommonItem _model;
   final Map _values = {'title': null, 'org': null, 'start': null, 'end': null, 'description': null};

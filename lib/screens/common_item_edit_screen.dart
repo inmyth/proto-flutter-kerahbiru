@@ -4,6 +4,7 @@ import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/common_item_form.dart';
 import 'package:proto_flutter_kerahbiru/screens/common_item_stepper.dart';
+import 'package:proto_flutter_kerahbiru/screens/common_item_view.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
 import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
@@ -23,16 +24,14 @@ class CommonItemEditScreen extends StatefulWidget {
 class _ExperienceEditScreen extends State<CommonItemEditScreen> {
   final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
   static const _fabDimension = 56.0;
-
   final String _profileId;
   final List<CommonItem> _expList;
   bool _isUpdated = false;
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
-
   String _title;
   String _emptyMsg;
   Function(ProfileState, int) _deleteFromState;
   Function(ProfileState, CommonItem) _createInState;
+
   _ExperienceEditScreen(this._profileId, this._expList);
 
   @override
@@ -71,7 +70,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
               transitionDuration: Duration(milliseconds: 800),
               openBuilder: (BuildContext context, VoidCallback _) {
                 int reservedItemId = _expList.isEmpty ? 0 : _expList.reduce((a, b) => a.id > b.id ? a : b).id + 1;
-                return CommonItemOnboarding(reservedItemId: reservedItemId);
+                return CommonItemStepper(reservedItemId: reservedItemId);
               },
               onClosed: (createdItem) {
                 if (createdItem != null) {
@@ -191,21 +190,13 @@ class _ExpCard extends StatelessWidget {
         closedColor: Theme.of(context).cardColor,
         closedElevation: 0.0,
         openElevation: 4.0,
-        transitionDuration: Duration(milliseconds: 600),
+        transitionDuration: Duration(milliseconds: 500),
         closedBuilder: (BuildContext _, VoidCallback openContainer) {
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(item.title, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-              Text(item.org, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-              Text(item.toDurationString(), style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
-              SizedBox(
-                height: 5.0,
-              ),
-              Text(item.description, style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
-              SizedBox(
-                height: 10.0,
-              ),
+              CommonItemView(item: item),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[

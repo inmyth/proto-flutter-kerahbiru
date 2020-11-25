@@ -21,6 +21,7 @@ class _TitleFieldState extends State<TitleField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: Keys.titleField,
       initialValue: widget.initialValue ?? '',
       decoration: const InputDecoration(
         hintText: '',
@@ -55,6 +56,7 @@ class _OrgFieldState extends State<OrgField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: Keys.orgField,
       initialValue: widget.initialValue ?? '',
       decoration: const InputDecoration(
         hintText: '',
@@ -89,6 +91,7 @@ class _DescriptionFieldState extends State<DescriptionField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: Keys.descriptionField,
       minLines: 5,
       maxLines: 12,
       initialValue: widget.initialValue ?? '',
@@ -113,7 +116,7 @@ class StartEndDates extends StatefulWidget {
   final Function(DateTime) onSavedStart;
   final Function(DateTime) onSavedEnd;
 
-  const StartEndDates({Key key, this.initialStart, this.initialEnd, this.onSavedStart, this.onSavedEnd}) : super(key: key);
+  const StartEndDates({Key key, this.initialStart, this.initialEnd, this.onSavedStart, this.onSavedEnd}) : super(key: Keys.startEndDateWidget);
 
   @override
   _StartEndDatesState createState() => _StartEndDatesState();
@@ -295,6 +298,7 @@ class _CheckboxFormField extends FormField<bool> {
       bool initialValue = false,
       autovalidateMode = AutovalidateMode.always})
       : super(
+            key: Keys.currentlyWorkingCheckbox,
             onSaved: onSaved,
             validator: validator,
             initialValue: initialValue,
@@ -324,7 +328,10 @@ class _CheckboxFormField extends FormField<bool> {
 _showPickerDate(BuildContext context, String title, DateTime now, Function(DateTime) onSelected) {
   Picker(
       hideHeader: true,
-      adapter: DateTimePickerAdapter(type: PickerDateTimeType.kYM, maxValue: new DateTime(now.year, now.month - 1)),
+      adapter: DateTimePickerAdapter(
+          type: PickerDateTimeType.kYM,
+          maxValue: new DateTime(now.year, now.month - 1),
+      ),
       title: Text(title),
       confirmText: 'SELECT',
       selectedTextStyle: TextStyle(color: Colors.blue),
