@@ -41,7 +41,8 @@ Uses **Provided**design pattern. Guides:
     - complete ir for the rest of the items
 - [x] reload if new updates
 - [x] page animation proto (profile -> edit)
-- page animation (edit -> new or form)
+- [x] page animation (edit -> new)
+- page animation (edit -> form)
 - refactor edit returned models
 - refactor extracted views
 - date picker for exp end date

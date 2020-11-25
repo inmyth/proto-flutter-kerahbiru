@@ -309,7 +309,7 @@ class _Common extends StatelessWidget {
                 transitionDuration: Duration(milliseconds: 800),
                 closedBuilder: (BuildContext _, VoidCallback openContainer) {
                   return GestureDetector(
-                    child: IconButton(icon: Icon(Icons.add), tooltip: 'Add experience', onPressed: openContainer),
+                    child: IconButton(icon: Icon(Icons.add), tooltip: 'Edit experience', onPressed: openContainer),
                   );
                 },
                 openBuilder: (BuildContext _, VoidCallback openContainer) {

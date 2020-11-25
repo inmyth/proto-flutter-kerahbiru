@@ -5,8 +5,9 @@ import 'package:proto_flutter_kerahbiru/screens/common_item_view.dart';
 
 class CommonItemOnboarding extends StatefulWidget {
   final int reservedItemId;
+  final onClosed;
 
-  const CommonItemOnboarding({Key key, this.reservedItemId}) : super(key: key);
+  const CommonItemOnboarding({Key key, this.reservedItemId, this.onClosed}) : super(key: key);
 
   @override
   _CommonItemOnboardingState createState() => _CommonItemOnboardingState();

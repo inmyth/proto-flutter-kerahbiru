@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
 import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
@@ -20,6 +21,9 @@ class CommonItemEditScreen extends StatefulWidget {
 }
 
 class _ExperienceEditScreen extends State<CommonItemEditScreen> {
+  final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
+  static const _fabDimension = 56.0;
+
   final String _profileId;
   final List<CommonItem> _expList;
   bool _isUpdated = false;
@@ -29,7 +33,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
   String _emptyMsg;
   Function(ProfileState, int) _deleteFromState;
   Function(ProfileState, CommonItem) _createInState;
-  Function(Map) _buildItem;
+  // Function(Map) _buildItem;
 
   _ExperienceEditScreen(this._profileId, this._expList);
 
@@ -41,13 +45,13 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
       _emptyMsg = 'Add your work experience. Start getting noticed.';
       _deleteFromState = (state, position) => state.deleteExperience(_profileId, this._expList[position].id);
       _createInState = (state, item) => state.createExperience(_profileId, item);
-      _buildItem = (values) => new Experience(
-          id: values['id'],
-          title: values['title'],
-          org: values['org'],
-          start: values['start'],
-          end: values['end'],
-          description: values['description']);
+      // _buildItem = (values) => new Experience(
+      //     id: values['id'],
+      //     title: values['title'],
+      //     org: values['org'],
+      //     start: values['start'],
+      //     end: values['end'],
+      //     description: values['description']);
     } else {
       _title = 'error';
       _emptyMsg = 'unknown common item type';
@@ -71,18 +75,50 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                 onPressed: () => _popToBack(context, _isUpdated),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                Navigator.push(context, MaterialPageRoute(builder: (_){
-                  return CommonItemOnboarding();
-                }));
-                // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                //   return CommonItemForm();
-                // }));
-                // _onNewItem(profileState, res);
+            // floatingActionButton: FloatingActionButton(
+            //   onPressed: () async {
+            //     Navigator.push(context, MaterialPageRoute(builder: (_){
+            //       return CommonItemOnboarding();
+            //     }));
+            //     // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+            //     //   return CommonItemForm();
+            //     // }));
+            //     // _onNewItem(profileState, res);
+            //   },
+            //   // tooltip: ArchSampleLocalizations.of(context).addTodo,
+            //   child: const Icon(Icons.add),
+            // ),
+            floatingActionButton: OpenContainer(
+              transitionType: _transitionType,
+              transitionDuration: Duration(milliseconds: 800),
+              openBuilder: (BuildContext context, VoidCallback _) {
+                int reservedItemId = _expList.isEmpty ? 0 : _expList.reduce((a, b) => a.id > b.id ? a : b).id + 1;
+                return CommonItemOnboarding(reservedItemId: reservedItemId);
               },
-              // tooltip: ArchSampleLocalizations.of(context).addTodo,
-              child: const Icon(Icons.add),
+              onClosed: (createdItem) {
+                if(createdItem != null){
+                  _onNewItem(profileState, createdItem);
+                }
+              },
+              closedElevation: 6.0,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(_fabDimension / 2),
+                ),
+              ),
+              closedColor: Theme.of(context).colorScheme.secondary,
+              closedBuilder: (BuildContext context, VoidCallback openContainer) {
+                return SizedBox(
+                  height: _fabDimension,
+                  width: _fabDimension,
+                  child: Center(
+                    child: Icon(
+                      Icons.add,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+                  ),
+                );
+              },
             ),
             body: Center(
               child: Container(
@@ -105,19 +141,19 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
     });
   }
 
-  void _onNewItem(ProfileState state, Map res) {
-    var newItem = _buildItem(res);
-    _createInState(state, newItem);
+  void _onNewItem(ProfileState state, CommonItem createdItem) {
+    // var newItem = _buildItem(res);
+    _createInState(state, createdItem);
     _isUpdated = true;
     setState(() {
-      _expList.removeWhere((element) => element.id == newItem.id);
-      _expList.add(newItem);
+      _expList.removeWhere((element) => element.id == createdItem.id);
+      _expList.add(createdItem);
       _expList.sort((a,b) => a.id - b.id);
     });
   }
 
-  void _onEdited(ProfileState state, Map res, int position){
-    var editedItem = _buildItem(res);
+  void _onEdited(ProfileState state, CommonItem editedItem, int position){
+    // var editedItem = _buildItem(res);
     _createInState(state, editedItem);
     _isUpdated = true;
     setState(() {
@@ -138,10 +174,10 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
                   _isUpdated = true;
                 },
                 onEdit: () async {
-                  final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return CommonItemForm(initialModel: this._expList[position]);
-                  }));
-                  _onEdited(state, res, position);
+                  // final Map res = await Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  //   return CommonItemForm(initialModel: this._expList[position]);
+                  // }));
+                  // _onEdited(state, res, position);
                 },
               );
             })
