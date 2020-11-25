@@ -174,11 +174,8 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
 
 class _ExpCard extends StatelessWidget {
   final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
-
   final CommonItem item;
   final VoidCallback onDelete;
-
-  // final Function onEdit;
   final onOpenBuilder;
   final onItemEdited;
 
@@ -189,55 +186,54 @@ class _ExpCard extends StatelessWidget {
     return Card(
       color: Colors.white,
       elevation: 2.0,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(item.title, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-          Text(item.org, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
-          Text(item.toDurationString(), style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
-          SizedBox(
-            height: 5.0,
-          ),
-          Text(item.description, style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
-          SizedBox(
-            height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              TextButton(
-                child: const Text('DELETE',
-                    style: TextStyle(
-                      color: Colors.red,
-                    )),
-                onPressed: () =>
-                    showConfirmDialog(context, 'Confirm Delete', 'This item will be permanently deleted', 'YES, DELETE IT', 'CANCEL', isRedYes: true)
-                        .then((v) => v == ButtonResult.ok ? this.onDelete.call() : null),
+      child: OpenContainer(
+        transitionType: _transitionType,
+        closedColor: Theme.of(context).cardColor,
+        closedElevation: 0.0,
+        openElevation: 4.0,
+        transitionDuration: Duration(milliseconds: 600),
+        closedBuilder: (BuildContext _, VoidCallback openContainer) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(item.title, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
+              Text(item.org, style: TextStyle(fontWeight: FontWeight.w600, height: 1.5, fontSize: 14.0)),
+              Text(item.toDurationString(), style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
+              SizedBox(
+                height: 5.0,
               ),
-              const SizedBox(width: 8),
-              OpenContainer(
-                transitionType: _transitionType,
-                closedColor: Theme.of(context).cardColor,
-                closedElevation: 0.0,
-                openElevation: 4.0,
-                transitionDuration: Duration(milliseconds: 400),
-                closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                  return GestureDetector(
-                    child: TextButton(
-                      child: const Text('EDIT'),
-                      onPressed: openContainer,
-                    ),
-                  );
-                },
-                openBuilder: (BuildContext _, VoidCallback openContainer) {
-                  return onOpenBuilder();
-                },
-                onClosed: (editedModel) => onItemEdited(editedModel),
+              Text(item.description, style: TextStyle(fontWeight: FontWeight.w300, height: 1.5, fontSize: 14.0)),
+              SizedBox(
+                height: 10.0,
               ),
-              const SizedBox(width: 8),
-            ],
-          ),
-        ]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  TextButton(
+                    child: const Text('DELETE',
+                        style: TextStyle(
+                          color: Colors.red,
+                        )),
+                    onPressed: () =>
+                        showConfirmDialog(context, 'Confirm Delete', 'This item will be permanently deleted', 'YES, DELETE IT', 'CANCEL', isRedYes: true)
+                            .then((v) => v == ButtonResult.ok ? this.onDelete.call() : null),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    child: const Text('EDIT'),
+                    onPressed: openContainer,
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ]),
+          );
+        },
+        openBuilder: (BuildContext _, VoidCallback openContainer) {
+          return onOpenBuilder();
+        },
+        onClosed: (editedModel) => onItemEdited(editedModel),
+
       ),
     );
   }
