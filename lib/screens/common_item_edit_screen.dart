@@ -99,7 +99,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
             ),
             body: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
                 child: _buildMainView(profileState),
                 alignment: Alignment(0.0, 0.0),
               ),
