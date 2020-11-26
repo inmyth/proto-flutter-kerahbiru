@@ -36,12 +36,12 @@ class ProfileState extends ChangeNotifier {
 
   void switchPage(bool isRootPage, bool shouldUpdateProfile){
     _isRootPage = isRootPage;
-    if(_isRootPage && shouldUpdateProfile){
-      loadProfile();
-    }
-    else{
+    // if(_isRootPage && shouldUpdateProfile){
+    //   loadProfile();
+    // }
+    // else{
       notifyListeners();
-    }
+    // }
   }
 
   bool get isLoading => _isLoading;

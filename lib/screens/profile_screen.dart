@@ -11,28 +11,27 @@ import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/';
 
-  SharedAxisTransitionType _transitionType = SharedAxisTransitionType.horizontal;
+  final SharedAxisTransitionType _transitionType = SharedAxisTransitionType.horizontal;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileState>(
       builder: (context, state, child) {
-        return Expanded(
-          child: PageTransitionSwitcher(
-              duration: const Duration(milliseconds: 700),
-              reverse: !state.isRootPage,
-              transitionBuilder: (Widget child,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,) {
-                return SharedAxisTransition(
-                  child: child,
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: _transitionType,
-                );
-              },
-              child: state.isRootPage ? _ProfileMain() : CommonItemEditScreen(expList: List.of(state.profile.experiences), obj: new Experience()),
-        ),);
+        return PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 700),
+            reverse: !state.isRootPage,
+            transitionBuilder: (Widget child,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,) {
+              return SharedAxisTransition(
+                child: child,
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: _transitionType,
+              );
+            },
+            child: state.isRootPage ? _ProfileMain() : CommonItemEditScreen(expList: List.of(state.profile.experiences), obj: new Experience()),
+        );
       },
     );
   }

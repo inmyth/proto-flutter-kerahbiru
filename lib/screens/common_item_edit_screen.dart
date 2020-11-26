@@ -53,7 +53,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
     return WillPopScope(
       onWillPop: () {
         _popToBack(context, _isUpdated);
-        return Future.value(true);
+        return null;
       },
       child: Consumer<ProfileState>(
         builder: (context, profileState, child) {
