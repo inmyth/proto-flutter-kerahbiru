@@ -110,7 +110,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
     );
   }
 
-  void _popToBack(BuildContext context, bool isUpdated) => Navigator.of(context).pop(isUpdated);
+  void _popToBack(BuildContext context, bool isUpdated) => Provider.of<ProfileState>(context, listen: false).switchPage(true, isUpdated);
 
   void onRemoved(int index) {
     setState(() {

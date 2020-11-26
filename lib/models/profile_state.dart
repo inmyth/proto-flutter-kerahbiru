@@ -9,6 +9,8 @@ class ProfileState extends ChangeNotifier {
 
   bool _isLoading = false;
 
+  bool _isRootPage = true;
+
   ProfileState({this.repository});
 
   Future loadProfile() {
@@ -32,9 +34,21 @@ class ProfileState extends ChangeNotifier {
   Future deleteExperience(String profileId, int expId) =>
     repository.deleteExperience(profileId, expId);
 
+  void switchPage(bool isRootPage, bool shouldUpdateProfile){
+    _isRootPage = isRootPage;
+    if(_isRootPage && shouldUpdateProfile){
+      loadProfile();
+    }
+    else{
+      notifyListeners();
+    }
+  }
+
   bool get isLoading => _isLoading;
 
   Profile get profile => _profile;
+
+  bool get isRootPage => _isRootPage;
 
 
 }

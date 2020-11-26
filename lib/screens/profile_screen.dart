@@ -11,6 +11,34 @@ import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/';
 
+  SharedAxisTransitionType _transitionType = SharedAxisTransitionType.horizontal;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProfileState>(
+      builder: (context, state, child) {
+        return Expanded(
+          child: PageTransitionSwitcher(
+              duration: const Duration(milliseconds: 700),
+              reverse: !state.isRootPage,
+              transitionBuilder: (Widget child,
+                  Animation<double> animation,
+                  Animation<double> secondaryAnimation,) {
+                return SharedAxisTransition(
+                  child: child,
+                  animation: animation,
+                  secondaryAnimation: secondaryAnimation,
+                  transitionType: _transitionType,
+                );
+              },
+              child: state.isRootPage ? _ProfileMain() : CommonItemEditScreen(expList: List.of(state.profile.experiences), obj: new Experience()),
+        ),);
+      },
+    );
+  }
+}
+
+class _ProfileMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: Selector<ProfileState, bool>(
-        selector: (context, model) => model.isLoading,
+        selector: (context, state) => state.isLoading,
         builder: (context, isLoading, _) {
           if (isLoading) {
             return Center(
@@ -45,6 +73,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
 
 class _Head extends StatelessWidget {
   final Header header;
@@ -158,48 +187,49 @@ class _Head extends StatelessWidget {
 
 List<Widget> _buildSliders(BuildContext context, List<Showcase> showcases) {
   return showcases
-      .map((item) => GestureDetector(
-    onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (_) {
-        return _ShowcaseImageScreen(item.url);
-      }));
-    },
-    child: Container(
-      child: Container(
-        margin: EdgeInsets.all(5.0),
-        child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            child: Stack(
-              children: <Widget>[
-                Image.network(item.url, fit: BoxFit.cover, width: 1000.0),
-                Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
+      .map((item) =>
+      GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return _ShowcaseImageScreen(item.url);
+          }));
+        },
+        child: Container(
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                child: Stack(
+                  children: <Widget>[
+                    Image.network(item.url, fit: BoxFit.cover, width: 1000.0),
+                    Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          'No. ${showcases.indexOf(item)} image',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                    child: Text(
-                      'No. ${showcases.indexOf(item)} image',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )),
-      ),
-    ),
-  ))
+                  ],
+                )),
+          ),
+        ),
+      ))
       .toList();
 }
 
@@ -288,8 +318,6 @@ class _Common extends StatelessWidget {
   final String title;
   final isAddable;
 
-  final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -300,32 +328,16 @@ class _Common extends StatelessWidget {
           Container(
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text(this.title, style: TextStyle(fontWeight: FontWeight.bold, height: 2.0, fontSize: 24.0)),
-              this.isAddable
-                  ? OpenContainer(
-                transitionType: _transitionType,
-                closedColor: Theme.of(context).canvasColor,
-                closedElevation: 0.0,
-                openElevation: 20.0,
-                transitionDuration: Duration(milliseconds: 800),
-                closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                  return GestureDetector(
-                    child: IconButton(icon: Icon(Icons.add), tooltip: 'Edit experience', onPressed: openContainer),
-                  );
-                },
-                openBuilder: (BuildContext _, VoidCallback openContainer) {
-                  return CommonItemEditScreen(expList: List.of(list), obj: obj);
-                },
-                onClosed: (isUpdated) {
-                  if(isUpdated){
-                    Provider.of<ProfileState>(context, listen: false).loadProfile();
-                  }
-                },
-              )
-                  : IconButton(
+              IconButton(
                 icon: Icon(Icons.add),
                 tooltip: 'Add experience',
                 onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(content: Text('Lagi dibuat')));
+                  if (this.isAddable) {
+                    Provider.of<ProfileState>(context, listen: false).switchPage(false, false);
+                  }
+                  else {
+                    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Lagi dibuat')));
+                  }
                 },
               ),
             ]),

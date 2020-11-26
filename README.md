@@ -2,6 +2,12 @@
 
 A Linkedin-like app.
 
+Features:
+- state management
+- fake api
+- animations : Hero, container transformation, axis transition
+- form
+
 ## Architecture guideline
 
 ### Convention and Pattern
@@ -44,12 +50,11 @@ A Linkedin-like app.
     - parent-child relations : parent cannot call child but triggers change due to child using parent (widget.) [read](https://stackoverflow.com/questions/48481590/how-to-set-update-state-of-statefulwidget-from-other-statefulwidget-in-flutter)
 
 ## Todo
-- new user registration
-    - could use stepper
 - theme
 - locale
 - global keys
 - global formats (date, currency, etc)
+- [x] onboarding user registration with stepper
 - [x] complete prototype of approach A (Experience item)
     - complete ir for the rest of the items
 - [x] reload if new updates
