@@ -99,7 +99,7 @@ class _CommonItemStepperState extends State<CommonItemStepper> {
         body: Stepper(
           steps: [
             Step(
-              title: const Text('Start here'),
+              title: const Text('Start'),
               isActive: true,
               state: _stepStates[0],
               content: Column(
@@ -119,7 +119,7 @@ class _CommonItemStepperState extends State<CommonItemStepper> {
               content: Column(
                 children: <Widget>[
                   Text(
-                    'Enter your occupation. It can be title, position, or duty.',
+                    'Enter your occupation. It can be your duty or position.',
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0),
                     textAlign: TextAlign.start,
                   ),
@@ -164,7 +164,7 @@ class _CommonItemStepperState extends State<CommonItemStepper> {
               content: Column(
                 children: <Widget>[
                   Text(
-                    'Describe your responsibility and achievement. Try to impress your reader. This field is optional.',
+                    "What was you responsibility ? How did you solve your job's problem ? What was your achievement ? Describe it here to impress your potential employer.",
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0),
                     textAlign: TextAlign.start,
                   ),
