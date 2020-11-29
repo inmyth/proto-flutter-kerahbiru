@@ -5,8 +5,10 @@ A Linkedin-like app.
 Features:
 - state management
 - fake api
-- animations : Hero, container transformation, axis transition
 - form
+- animations : Hero, container transformation, axis transition
+Demo:
+![Demo](demostuff/kb1_640.gif)
 
 ## Architecture guideline
 
