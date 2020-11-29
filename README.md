@@ -21,7 +21,7 @@ Demo:
 - model convention :
     - the model
     - entity : model used by repository
-    - state :  model used by view to store and manage state. Sstate extends (ChangeNotifier)[https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple] and broadcasts updates with notifyListeners
+    - state :  model used by view to store and manage state. State extends (ChangeNotifier)[https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple] and broadcasts updates with notifyListeners
 - page transitions
     - reserve MaterialPageRoute for main pages (pages listed on AppDrawer)
     - from main page to sub-pages, listview item click, fab, etc, use [canned-animation package](https://pub.dev/packages/animations)
