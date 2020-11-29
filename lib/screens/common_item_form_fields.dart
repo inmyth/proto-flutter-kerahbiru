@@ -60,7 +60,7 @@ class _OrgFieldState extends State<OrgField> {
       initialValue: widget.initialValue ?? '',
       decoration: const InputDecoration(
         hintText: '',
-        labelText: 'Occupation',
+        labelText: 'Company',
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -199,7 +199,7 @@ class _StartEndDatesState extends State<StartEndDates> {
           label: 'End Date',
           controller: _endController,
           isEnabled: !_isCurrentlyWorking,
-          initialValue: widget.initialEnd,
+          initialValue: _isCurrentlyWorking ? null : widget.initialEnd,
           onSaved: _onSavedEnd,
           validator: _endValidator,
         ),

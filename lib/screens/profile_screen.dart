@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
     return Consumer<ProfileState>(
       builder: (context, state, child) {
         return PageTransitionSwitcher(
-            duration: const Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 1500),
             reverse: !state.isRootPage,
             transitionBuilder: (Widget child,
                 Animation<double> animation,

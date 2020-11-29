@@ -67,7 +67,7 @@ class _ExperienceEditScreen extends State<CommonItemEditScreen> {
             ),
             floatingActionButton: OpenContainer(
               transitionType: _transitionType,
-              transitionDuration: Duration(milliseconds: 800),
+              transitionDuration: Duration(milliseconds: 1500),
               openBuilder: (BuildContext context, VoidCallback _) {
                 int reservedItemId = _expList.isEmpty ? 0 : _expList.reduce((a, b) => a.id > b.id ? a : b).id + 1;
                 return CommonItemStepper(reservedItemId: reservedItemId);
@@ -190,7 +190,7 @@ class _ExpCard extends StatelessWidget {
         closedColor: Theme.of(context).cardColor,
         closedElevation: 0.0,
         openElevation: 4.0,
-        transitionDuration: Duration(milliseconds: 500),
+        transitionDuration: Duration(milliseconds: 1500),
         closedBuilder: (BuildContext _, VoidCallback openContainer) {
           return Padding(
             padding: const EdgeInsets.all(16.0),

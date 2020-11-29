@@ -138,7 +138,7 @@ class _CommonItemStepperState extends State<CommonItemStepper> {
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16.0),
                     textAlign: TextAlign.start,
                   ),
-                  Form(key: _formKeys[2], child: TitleField(initialValue: null, onSaved: (v) => _values['org'] = v))
+                  Form(key: _formKeys[2], child: OrgField(initialValue: null, onSaved: (v) => _values['org'] = v))
                 ],
               ),
             ),
