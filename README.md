@@ -7,8 +7,9 @@ Features:
 - fake api
 - form
 - animations : Hero, container transformation, axis transition
+
 Demo:
-![Demo](demostuff/kb1_640.gif)
+![Demo](../demostuff/kb1_640.gif)
 
 ## Architecture guideline
 
