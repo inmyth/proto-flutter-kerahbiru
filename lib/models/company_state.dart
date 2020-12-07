@@ -46,6 +46,9 @@ class CompanyState extends ChangeNotifier {
   bool get isProjectPageLaoding => _isProjectPageLoading;
   bool get isWorkerListPageLoading => _isWorkerListPageLoading;
 
+  bool checkIfUserExists(String email) => _repository.checkIfUserExists(email);
+  bool checkIfUserAlreadyRegistered(String email) => _workers.firstWhere((element) => element.email == email) != null;
+
   List<CompanyProject> get projects => _projects;
   List<ProjectWorker> get workers => _workers;
 

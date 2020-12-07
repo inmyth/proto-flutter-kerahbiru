@@ -6,5 +6,7 @@ abstract class CompanyRepository {
 
   Future<List<ProjectWorkerEntity>> loadProjectUsers();
 
+  bool checkIfUserExists(String email);
+
 
 }

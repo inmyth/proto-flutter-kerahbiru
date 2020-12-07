@@ -1,9 +1,12 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:proto_flutter_kerahbiru/models/company_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/consts.dart';
 import 'package:proto_flutter_kerahbiru/screens/formats.dart';
 import 'package:proto_flutter_kerahbiru/screens/keys.dart';
+import 'package:provider/provider.dart';
 
 class TitleField extends StatefulWidget {
   final String initialValue;
@@ -39,6 +42,47 @@ class _TitleFieldState extends State<TitleField> {
     );
   }
 }
+
+class EmailField extends StatefulWidget {
+  final String initialValue;
+  final Function(String) onSaved;
+
+  const EmailField({Key key, @required this.initialValue, @required this.onSaved}) : super(key: key);
+
+  @override
+  _EmailFieldState createState() => _EmailFieldState();
+}
+
+class _EmailFieldState extends State<EmailField> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      key: Keys.titleField,
+      initialValue: widget.initialValue ?? '',
+      decoration: const InputDecoration(
+        hintText: '',
+        labelText: 'Email',
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter the email address';
+        }
+        if(EmailValidator.validate(value)){
+          return 'This is not a valid email';
+        }
+        if(!Provider.of<CompanyState>(context, listen: false).checkIfUserExists(value)){
+          return 'This user is not in Kerahbiru db';
+        }
+        if(!Provider.of<CompanyState>(context, listen: false).checkIfUserAlreadyRegistered(value)){
+          return 'This user is already registered';
+        }
+        return null;
+      },
+      onSaved: widget.onSaved,
+    );
+  }
+}
+
 
 class OrgField extends StatefulWidget {
   final String initialValue;

@@ -14,6 +14,10 @@ class WebClient implements ProfileRepository, CompanyRepository {
     ProjectWorkerEntity("david@email.com", "David", null, null, ProjectWorkerStatus.created),
   ];
 
+  var dbUsers = {
+    "david@email.com" : "David"
+  };
+
   var david = ProfileEntity(
       id: 'david',
       header: HeaderEntity(
@@ -150,4 +154,7 @@ class WebClient implements ProfileRepository, CompanyRepository {
 
   @override
   Future<List<CompanyProjectEntity>> loadProjects() => Future.delayed(delay, () => this.mucoindoProjects);
+
+  @override
+  bool checkIfUserExists(String email) => dbUsers.containsKey(email);
 }
