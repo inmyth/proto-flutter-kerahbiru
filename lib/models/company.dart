@@ -10,14 +10,14 @@ class CompanyProject {
 }
 
 
-class ProjectUser{
+class ProjectWorker{
   final String email;
   final String name;
   final DateTime start;
   final DateTime end;
-  final ProjectUserStatus projectUserStatus;
+  final ProjectWorkerStatus status;
 
-  ProjectUser(this.email, this.name, this.start, this.end, this.projectUserStatus);
+  ProjectWorker(this.email, this.name, this.start, this.end, this.status);
 
-  static ProjectUser fromEntity(ProjectUserEntity entity) => ProjectUser(entity.email, entity.name, entity.start, entity.end, entity.projectUserStatus);
+  static ProjectWorker fromEntity(ProjectWorkerEntity entity) => ProjectWorker(entity.email, entity.name, entity.start, entity.end, entity.status);
 }

@@ -3,34 +3,50 @@ import 'package:proto_flutter_kerahbiru/models/company.dart';
 import 'package:proto_flutter_kerahbiru/services/company_repository.dart';
 
 class CompanyState extends ChangeNotifier {
-  final CompanyRepository repository;
+  final CompanyRepository _repository;
 
-  bool _isRootPage = true;
 
-  bool _isLoading;
+  bool _isProjectPageLoading;
+  bool _isWorkerListPageLoading;
 
   List<CompanyProject> _projects;
+  List<ProjectWorker> _workers;
 
-  CompanyState(this.repository);
-
+  CompanyState(this._repository);
 
   Future loadProjects() {
-    _isLoading = true;
+    _isProjectPageLoading = true;
     notifyListeners();
 
-    return repository.loadProjects().then((p) {
+    return _repository.loadProjects().then((p) {
       _projects = p.map((e) => CompanyProject.fromEntity(e)).toList();
-      _isLoading = false;
+      _isProjectPageLoading = false;
       notifyListeners();
     }).catchError((err) {
-      _isLoading = false;
+      _isProjectPageLoading = false;
       notifyListeners();
     });
   }
 
-  bool get isLoading => _isLoading;
+  Future loadWorkers(int id) {
+    _isWorkerListPageLoading = true;
+    notifyListeners();
 
-  bool get isRootPage => _isRootPage;
+    return _repository.loadProjectUsers().then((p) {
+      _workers = p.map((e) => ProjectWorker.fromEntity(e)).toList();
+      _isWorkerListPageLoading = false;
+      notifyListeners();
+    }).catchError((err) {
+      _isWorkerListPageLoading = false;
+      notifyListeners();
+    });
+  }
+
+
+  bool get isProjectPageLaoding => _isProjectPageLoading;
+  bool get isWorkerListPageLoading => _isWorkerListPageLoading;
 
   List<CompanyProject> get projects => _projects;
+  List<ProjectWorker> get workers => _workers;
+
 }

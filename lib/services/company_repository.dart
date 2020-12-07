@@ -4,7 +4,7 @@ abstract class CompanyRepository {
 
   Future<List<CompanyProjectEntity>> loadProjects();
 
-  Future<List<ProjectUserEntity>> loadProjectUsers();
+  Future<List<ProjectWorkerEntity>> loadProjectUsers();
 
 
 }

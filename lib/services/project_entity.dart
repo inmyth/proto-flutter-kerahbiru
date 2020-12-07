@@ -8,7 +8,7 @@ class CompanyProjectEntity{
 
 }
 
-enum ProjectUserStatus{
+enum ProjectWorkerStatus{
   created,
   notified,
   accepted,
@@ -17,14 +17,14 @@ enum ProjectUserStatus{
   ended
 }
 
-class ProjectUserEntity{
+class ProjectWorkerEntity{
   final String email;
   final String name;
   final DateTime start;
   final DateTime end;
-  final ProjectUserStatus projectUserStatus;
+  final ProjectWorkerStatus status;
 
-  ProjectUserEntity(this.email, this.name, this.start, this.end, this.projectUserStatus);
+  ProjectWorkerEntity(this.email, this.name, this.start, this.end, this.status);
 
 
 }

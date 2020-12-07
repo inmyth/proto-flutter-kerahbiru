@@ -9,9 +9,9 @@ class WebClient implements ProfileRepository, CompanyRepository {
   var mucoindoProjects = [CompanyProjectEntity(3, "Tangguh LNG")];
 
   var tangguhWorkers = [
-    ProjectUserEntity("adi@email.com", "Adi", null, null, ProjectUserStatus.ended),
-    ProjectUserEntity("budi@email.com", "Budi", null, null, ProjectUserStatus.ended),
-    ProjectUserEntity("david@email.com", "David", null, null, ProjectUserStatus.created),
+    ProjectWorkerEntity("adi@email.com", "Adi", null, null, ProjectWorkerStatus.ended),
+    ProjectWorkerEntity("budi@email.com", "Budi", null, null, ProjectWorkerStatus.ended),
+    ProjectWorkerEntity("david@email.com", "David", null, null, ProjectWorkerStatus.created),
   ];
 
   var david = ProfileEntity(
@@ -146,10 +146,7 @@ class WebClient implements ProfileRepository, CompanyRepository {
       Future.delayed(delay, () => this.david.experiences.removeWhere((element) => element.id == expId));
 
   @override
-  Future<List<ProjectUserEntity>> loadProjectUsers() {
-    // TODO: implement loadProjectUsers
-    throw UnimplementedError();
-  }
+  Future<List<ProjectWorkerEntity>> loadProjectUsers() => Future.delayed(delay, () => this.tangguhWorkers);
 
   @override
   Future<List<CompanyProjectEntity>> loadProjects() => Future.delayed(delay, () => this.mucoindoProjects);
