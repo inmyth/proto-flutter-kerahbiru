@@ -6,7 +6,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    App(profileRepository: WebClient())
+    App(profileRepository: WebClient(), companyRepository: WebClient())
   );
 }
 

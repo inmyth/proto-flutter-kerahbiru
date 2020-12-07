@@ -25,13 +25,12 @@ class AppDrawer extends StatelessWidget {
               text: 'Certificate',
               onTap: () =>
               currentPage == Routes.certificate ? null : Navigator.pushReplacementNamed(context, Routes.certificate)),
-          // _createDrawerItem(
-          //     icon: Icons.account_box,
-          //     text: 'Resume (old)',
-          //     onTap: () => currentPage == Routes.profileOld ? null :
-          //     Navigator.pushReplacementNamed(context, Routes.profileOld)),
+          _createDrawerItem(
+              icon: Icons.auto_stories,
+              text: 'App : Company version',
+              onTap: () => currentPage == Routes.company ? null : Navigator.pushReplacementNamed(context, Routes.company)),
           ListTile(
-            title: Text('0.0.1'),
+            title: Text('0.0.2'),
             onTap: () {},
           ),
         ],

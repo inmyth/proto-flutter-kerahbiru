@@ -1,8 +1,18 @@
+import 'package:proto_flutter_kerahbiru/services/company_repository.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_entity.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_repository.dart';
+import 'package:proto_flutter_kerahbiru/services/project_entity.dart';
 
-class WebClient implements ProfileRepository {
+class WebClient implements ProfileRepository, CompanyRepository {
   final Duration delay;
+
+  var mucoindoProjects = [CompanyProjectEntity(3, "Tangguh LNG")];
+
+  var tangguhWorkers = [
+    ProjectUserEntity("adi@email.com", "Adi", null, null, ProjectUserStatus.ended),
+    ProjectUserEntity("budi@email.com", "Budi", null, null, ProjectUserStatus.ended),
+    ProjectUserEntity("david@email.com", "David", null, null, ProjectUserStatus.created),
+  ];
 
   var david = ProfileEntity(
       id: 'david',
@@ -102,7 +112,7 @@ class WebClient implements ProfileRepository {
         )
       ]);
 
-  WebClient([this.delay = const Duration(milliseconds: 3000)]);
+  WebClient([this.delay = const Duration(milliseconds: 1000)]);
 
   @override
   Future<ProfileEntity> loadProfile() {
@@ -126,12 +136,21 @@ class WebClient implements ProfileRepository {
 
   @override
   Future createExperience(String profileId, ExperienceEntity newExp) => Future.delayed(delay, () {
-      this.david.experiences.removeWhere((element) => element.id == newExp.id);
-      this.david.experiences.add(newExp);
-      this.david.experiences.sort((a,b) => a.id - b.id);
-  });
+        this.david.experiences.removeWhere((element) => element.id == newExp.id);
+        this.david.experiences.add(newExp);
+        this.david.experiences.sort((a, b) => a.id - b.id);
+      });
 
   @override
   Future deleteExperience(String profileId, int expId) =>
       Future.delayed(delay, () => this.david.experiences.removeWhere((element) => element.id == expId));
+
+  @override
+  Future<List<ProjectUserEntity>> loadProjectUsers() {
+    // TODO: implement loadProjectUsers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CompanyProjectEntity>> loadProjects() => Future.delayed(delay, () => this.mucoindoProjects);
 }
