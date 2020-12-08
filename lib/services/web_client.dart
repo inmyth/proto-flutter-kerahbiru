@@ -150,8 +150,6 @@ class WebClient implements ProfileRepository, CompanyRepository {
   Future deleteExperience(String profileId, int expId) =>
       Future.delayed(delay, () => this.david.experiences.removeWhere((element) => element.id == expId));
 
-  @override
-  Future<List<ProjectWorkerEntity>> loadProjectUsers() => Future.delayed(delay, () => this.tangguhWorkers);
 
   @override
   Future<List<CompanyProjectEntity>> loadProjects() => Future.delayed(delay, () => this.mucoindoProjects);
@@ -161,6 +159,15 @@ class WebClient implements ProfileRepository, CompanyRepository {
 
   @override
   ProjectWorkerEntity getWorker(String email) => dbUsers[email];
+
+  @override
+  List<ProjectWorkerEntity> loadProjectWorkers() => tangguhWorkers;
+
+  @override
+  addWorker(ProjectWorkerEntity entity) {
+    tangguhWorkers.removeWhere((element) => element.email == entity.email);
+    tangguhWorkers.add(entity);
+  }
 
 
 

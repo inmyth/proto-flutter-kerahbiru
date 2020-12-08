@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/company.dart';
 import 'package:proto_flutter_kerahbiru/services/company_repository.dart';
+import 'package:proto_flutter_kerahbiru/services/project_entity.dart';
 
 class CompanyState extends ChangeNotifier {
   final CompanyRepository _repository;
 
   bool _isProjectPageLoading;
-  bool _isWorkerListPageLoading;
 
   List<CompanyProject> _projects;
-  List<ProjectWorker> _workers;
 
   CompanyState(this._repository);
 
@@ -27,36 +26,23 @@ class CompanyState extends ChangeNotifier {
     });
   }
 
-  Future loadWorkers(int id) {
-    _isWorkerListPageLoading = true;
-    notifyListeners();
 
-    return _repository.loadProjectUsers().then((p) {
-      _workers = p.map((e) => ProjectWorker.fromEntity(e)).toList();
-      _isWorkerListPageLoading = false;
-      notifyListeners();
-    }).catchError((err) {
-      _isWorkerListPageLoading = false;
-      notifyListeners();
-    });
-  }
 
-  bool get isProjectPageLaoding => _isProjectPageLoading;
+  List<ProjectWorker> getWorkers() => _repository.loadProjectWorkers().map((e) => ProjectWorker.fromEntity(e)).toList();
 
-  bool get isWorkerListPageLoading => _isWorkerListPageLoading;
+  bool get isProjectPageLoading => _isProjectPageLoading;
 
   bool checkIfUserExists(String email) => _repository.checkIfUserExists(email);
 
-  bool checkIfUserAlreadyRegistered(String email) => _workers.indexWhere((element) => element.email == email) > -1;
+  bool checkIfUserAlreadyRegistered(String email) => getWorkers().indexWhere((element) => element.email == email) > -1;
 
   ProjectWorker getWorkerFromRepo(String email) => ProjectWorker.fromEntity(_repository.getWorker(email));
 
   List<CompanyProject> get projects => _projects;
 
-  List<ProjectWorker> get workers => _workers;
-
   addWorker(ProjectWorker worker) {
-    _workers.add(worker);
+    ProjectWorkerEntity entity = new ProjectWorkerEntity(worker.email, worker.name, worker.start, worker.end, worker.status);
+    _repository.addWorker(entity);
     notifyListeners();
   }
 }

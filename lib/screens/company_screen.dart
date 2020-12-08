@@ -24,7 +24,7 @@ class CompanyScreen extends StatelessWidget {
           ),
           drawer: AppDrawer(),
           body: Selector<CompanyState, bool>(
-            selector: (context, state) => state.isProjectPageLaoding,
+            selector: (context, state) => state.isProjectPageLoading,
             builder: (context, isLoading, _) {
               if (isLoading) {
                 return Center(
@@ -54,22 +54,18 @@ class _ProjectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OpenContainer(
-      transitionType: _transitionType,
-      closedColor: Theme.of(context).cardColor,
-      closedElevation: 0.0,
-      openElevation: 4.0,
-      transitionDuration: Duration(milliseconds: 1500),
-      openBuilder: (BuildContext context, VoidCallback _) {
-        Provider.of<CompanyState>(context, listen: false).loadWorkers(item.id);
-        return ProjectWorkerScreen(project: item);
-      },
-      onClosed: null,
-      closedBuilder: (BuildContext _, VoidCallback openContainer) {
-        return Card(
-          color: Colors.white,
-          elevation: 2.0,
-          child: Padding(
+    return Card(
+      color: Colors.white,
+      elevation: 2.0,
+      child: OpenContainer(
+        transitionType: _transitionType,
+        closedColor: Theme.of(context).cardColor,
+        closedElevation: 0.0,
+        openElevation: 4.0,
+        transitionDuration: Duration(milliseconds: 1500),
+        openBuilder: (BuildContext context, VoidCallback _) => ProjectWorkerScreen(project: item),
+        closedBuilder: (BuildContext _, VoidCallback openContainer) {
+          return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
@@ -78,9 +74,9 @@ class _ProjectItem extends StatelessWidget {
                     title: Text(item.name),
                   ),
                 ],
-              )),
-        );
-      },
+              ));
+        },
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/company.dart';
 import 'package:proto_flutter_kerahbiru/models/company_state.dart';
+import 'package:proto_flutter_kerahbiru/screens/project_worker_control.dart';
 import 'package:proto_flutter_kerahbiru/screens/project_worker_stepper.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,7 @@ class ProjectWorkerScreen extends StatelessWidget {
 
   const ProjectWorkerScreen({Key key, this.project}) : super(key: key);
 
-  void _popToBack(BuildContext context) => null;
+  void _popToBack(BuildContext context) => Navigator.pop(context);
 
   @override
   Widget build(BuildContext context) {
@@ -65,19 +66,14 @@ class ProjectWorkerScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
                 alignment: Alignment(0.0, 0.0),
-                child: Selector<CompanyState, bool>(
-                  selector: (context, state) => state.isWorkerListPageLoading,
-                  builder: (context, isLoading, _) {
-                    if (isLoading) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+                child: Consumer<CompanyState>(
+                  builder: (context, state, child){
                     return ListView(
-                      children: state.workers.map((e) => _WorkerItem(item: e)).toList(),
+                      children: state.getWorkers().map((e) => _WorkerItem(item: e)).toList(),
                     );
                   },
-                ),
+
+                )
               ),
             ),
           );
@@ -88,25 +84,39 @@ class ProjectWorkerScreen extends StatelessWidget {
 }
 
 class _WorkerItem extends StatelessWidget {
+  final ContainerTransitionType _transitionType = ContainerTransitionType.fadeThrough;
+
   final ProjectWorker item;
 
   const _WorkerItem({this.item});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return
+      Card(
       color: Colors.white,
       elevation: 2.0,
-      child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              ListTile(
-                leading: Icon(Icons.perm_identity),
-                title: Text(item.name),
-              ),
-            ],
-          )),
+      child: OpenContainer(
+        transitionType: _transitionType,
+        closedColor: Theme.of(context).cardColor,
+        closedElevation: 0.0,
+        openElevation: 4.0,
+        transitionDuration: Duration(milliseconds: 1000),
+        closedBuilder: (BuildContext _, VoidCallback openContainer) {
+          return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.perm_identity),
+                      title: Text(item.name),
+                    ),
+                  ],
+                ));
+        },
+        openBuilder: (BuildContext _, VoidCallback openContainer) =>  ProjectWorkerControl(worker: item,),
+        // onClosed: (editedModel) => onItemEdited(editedModel),
+      )
     );
   }
 }

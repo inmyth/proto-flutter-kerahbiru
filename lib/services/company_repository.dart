@@ -5,10 +5,11 @@ abstract class CompanyRepository {
 
   Future<List<CompanyProjectEntity>> loadProjects();
 
-  Future<List<ProjectWorkerEntity>> loadProjectUsers();
+  List<ProjectWorkerEntity> loadProjectWorkers();
 
   bool checkIfUserExists(String email);
 
   ProjectWorkerEntity getWorker(String email);
 
+  addWorker(ProjectWorkerEntity entity);
 }
