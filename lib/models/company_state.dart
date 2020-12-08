@@ -5,7 +5,6 @@ import 'package:proto_flutter_kerahbiru/services/company_repository.dart';
 class CompanyState extends ChangeNotifier {
   final CompanyRepository _repository;
 
-
   bool _isProjectPageLoading;
   bool _isWorkerListPageLoading;
 
@@ -42,14 +41,22 @@ class CompanyState extends ChangeNotifier {
     });
   }
 
-
   bool get isProjectPageLaoding => _isProjectPageLoading;
+
   bool get isWorkerListPageLoading => _isWorkerListPageLoading;
 
   bool checkIfUserExists(String email) => _repository.checkIfUserExists(email);
-  bool checkIfUserAlreadyRegistered(String email) => _workers.firstWhere((element) => element.email == email) != null;
+
+  bool checkIfUserAlreadyRegistered(String email) => _workers.indexWhere((element) => element.email == email) > -1;
+
+  ProjectWorker getWorkerFromRepo(String email) => ProjectWorker.fromEntity(_repository.getWorker(email));
 
   List<CompanyProject> get projects => _projects;
+
   List<ProjectWorker> get workers => _workers;
 
+  addWorker(ProjectWorker worker) {
+    _workers.add(worker);
+    notifyListeners();
+  }
 }

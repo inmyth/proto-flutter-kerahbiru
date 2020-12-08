@@ -1,3 +1,4 @@
+import 'package:proto_flutter_kerahbiru/models/company.dart';
 import 'package:proto_flutter_kerahbiru/services/company_repository.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_entity.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_repository.dart';
@@ -11,11 +12,11 @@ class WebClient implements ProfileRepository, CompanyRepository {
   var tangguhWorkers = [
     ProjectWorkerEntity("adi@email.com", "Adi", null, null, ProjectWorkerStatus.ended),
     ProjectWorkerEntity("budi@email.com", "Budi", null, null, ProjectWorkerStatus.ended),
-    ProjectWorkerEntity("david@email.com", "David", null, null, ProjectWorkerStatus.created),
+
   ];
 
   var dbUsers = {
-    "david@email.com" : "David"
+    "david@email.com" : ProjectWorkerEntity("david@email.com", "David", null, null, null),
   };
 
   var david = ProfileEntity(
@@ -157,4 +158,10 @@ class WebClient implements ProfileRepository, CompanyRepository {
 
   @override
   bool checkIfUserExists(String email) => dbUsers.containsKey(email);
+
+  @override
+  ProjectWorkerEntity getWorker(String email) => dbUsers[email];
+
+
+
 }

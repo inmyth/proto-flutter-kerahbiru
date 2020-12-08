@@ -1,9 +1,14 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/company.dart';
 import 'package:proto_flutter_kerahbiru/models/company_state.dart';
+import 'package:proto_flutter_kerahbiru/screens/project_worker_stepper.dart';
 import 'package:provider/provider.dart';
 
 class ProjectWorkerScreen extends StatelessWidget {
+  static const _fabDimension = 56.0;
+  final ContainerTransitionType _transitionType = ContainerTransitionType.fade;
+
   final CompanyProject project;
 
   const ProjectWorkerScreen({Key key, this.project}) : super(key: key);
@@ -21,11 +26,40 @@ class ProjectWorkerScreen extends StatelessWidget {
         builder: (context, state, child) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Workers @${project.name} '),
+              title: Text('Personnel @${project.name} '),
               leading: new IconButton(
                 icon: new Icon(Icons.arrow_back),
                 onPressed: () => _popToBack(context),
               ),
+            ),
+            floatingActionButton: OpenContainer(
+              transitionType: _transitionType,
+              transitionDuration: Duration(milliseconds: 1000),
+              openBuilder: (BuildContext context, VoidCallback _) => ProjectWorkerStepper(),
+              onClosed: (newWorker) {
+                if (newWorker != null) {
+                  state.addWorker(newWorker);
+                }
+              },
+              closedElevation: 6.0,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(_fabDimension / 2),
+                ),
+              ),
+              closedColor: Theme.of(context).colorScheme.secondary,
+              closedBuilder: (BuildContext context, VoidCallback openContainer) {
+                return SizedBox(
+                  height: _fabDimension,
+                  width: _fabDimension,
+                  child: Center(
+                    child: Icon(
+                      Icons.add,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+                  ),
+                );
+              },
             ),
             body: Center(
               child: Container(

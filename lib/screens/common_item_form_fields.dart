@@ -67,13 +67,13 @@ class _EmailFieldState extends State<EmailField> {
         if (value.isEmpty) {
           return 'Please enter the email address';
         }
-        if(EmailValidator.validate(value)){
+        if(!EmailValidator.validate(value)){
           return 'This is not a valid email';
         }
         if(!Provider.of<CompanyState>(context, listen: false).checkIfUserExists(value)){
           return 'This user is not in Kerahbiru db';
         }
-        if(!Provider.of<CompanyState>(context, listen: false).checkIfUserAlreadyRegistered(value)){
+        if(Provider.of<CompanyState>(context, listen: false).checkIfUserAlreadyRegistered(value)){
           return 'This user is already registered';
         }
         return null;
