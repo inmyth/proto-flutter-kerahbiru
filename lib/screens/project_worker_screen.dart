@@ -69,7 +69,7 @@ class ProjectWorkerScreen extends StatelessWidget {
                 child: Consumer<CompanyState>(
                   builder: (context, state, child){
                     return ListView(
-                      children: state.getWorkers().map((e) => _WorkerItem(item: e)).toList(),
+                      children: state.getWorkers().map((e) => _WorkerItem(item: e, project: project,)).toList(),
                     );
                   },
 
@@ -87,8 +87,9 @@ class _WorkerItem extends StatelessWidget {
   final ContainerTransitionType _transitionType = ContainerTransitionType.fadeThrough;
 
   final ProjectWorker item;
+  final CompanyProject project;
 
-  const _WorkerItem({this.item});
+  const _WorkerItem({this.item, this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +115,7 @@ class _WorkerItem extends StatelessWidget {
                   ],
                 ));
         },
-        openBuilder: (BuildContext _, VoidCallback openContainer) =>  ProjectWorkerControl(worker: item,),
+        openBuilder: (BuildContext _, VoidCallback openContainer) =>  ProjectWorkerControl(worker: item, project: project,),
         // onClosed: (editedModel) => onItemEdited(editedModel),
       )
     );

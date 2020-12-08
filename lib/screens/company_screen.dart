@@ -1,15 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:proto_flutter_kerahbiru/models/company.dart';
 import 'package:proto_flutter_kerahbiru/models/company_state.dart';
-import 'package:proto_flutter_kerahbiru/models/profile.dart';
-import 'package:proto_flutter_kerahbiru/models/profile_state.dart';
 import 'package:proto_flutter_kerahbiru/screens/app_drawer.dart';
-import 'package:proto_flutter_kerahbiru/screens/common_item_edit_screen.dart';
 import 'package:proto_flutter_kerahbiru/screens/project_worker_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:proto_flutter_kerahbiru/screens/helpers.dart';
 
 class CompanyScreen extends StatelessWidget {
   static const String routeName = '/company';

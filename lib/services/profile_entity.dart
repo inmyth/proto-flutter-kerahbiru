@@ -48,13 +48,14 @@ class ExperienceEntity {
 }
 
 class ProjectEntity {
+  final int id;
   final String title;
   final String org;
   final int start;
   final int end;
   final String description;
 
-  ProjectEntity({this.title, this.org, this.start, this.end, this.description});
+  ProjectEntity(this.id, {this.title, this.org, this.start, this.end, this.description});
 }
 
 class CertificationEntity {

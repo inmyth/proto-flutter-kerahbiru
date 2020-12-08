@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proto_flutter_kerahbiru/models/profile.dart';
+import 'package:proto_flutter_kerahbiru/services/profile_entity.dart';
 import 'package:proto_flutter_kerahbiru/services/profile_repository.dart';
 
 class ProfileState extends ChangeNotifier {
@@ -27,22 +28,33 @@ class ProfileState extends ChangeNotifier {
     });
   }
 
-  Future createExperience(String profileId, Experience experience){
+  Future createExperience(String profileId, Experience experience) {
     return repository.createExperience(profileId, experience.toEntity());
   }
 
   Future deleteExperience(String profileId, int expId) =>
-    repository.deleteExperience(profileId, expId);
+      repository.deleteExperience(profileId, expId);
 
-  void switchPage(bool isRootPage, bool shouldUpdateProfile){
+  void switchPage(bool isRootPage, bool shouldUpdateProfile) {
     _isRootPage = isRootPage;
-    if(_isRootPage && shouldUpdateProfile){
+    if (_isRootPage && shouldUpdateProfile) {
       loadProfile();
     }
-    else{
+    else {
       notifyListeners();
     }
   }
+
+  addProject(Project project) {
+    repository.addProject(new ProjectEntity(project.id, title: project.title,
+        org: project.org,
+        start: project.start.millisecondsSinceEpoch ~/ 1000,
+        end: project.end.millisecondsSinceEpoch ~/ 1000,
+        description: project.description));
+    notifyListeners();
+  }
+
+
 
   bool get isLoading => _isLoading;
 

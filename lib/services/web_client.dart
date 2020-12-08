@@ -12,11 +12,10 @@ class WebClient implements ProfileRepository, CompanyRepository {
   var tangguhWorkers = [
     ProjectWorkerEntity("adi@email.com", "Adi", null, null, ProjectWorkerStatus.ended),
     ProjectWorkerEntity("budi@email.com", "Budi", null, null, ProjectWorkerStatus.ended),
-
   ];
 
   var dbUsers = {
-    "david@email.com" : ProjectWorkerEntity("david@email.com", "David", null, null, null),
+    "david@email.com": ProjectWorkerEntity("david@email.com", "David", null, null, null),
   };
 
   var david = ProfileEntity(
@@ -78,20 +77,20 @@ class WebClient implements ProfileRepository, CompanyRepository {
                 '• Review and check Instrumentation & Control subcontractor product basic design engineering, detail engineering, procurement, construction and commissioning of this project\n• Provides technical planning and general guidance for instrumentation in the execution of the project.'),
       ],
       projects: [
-        new ProjectEntity(
-            title: 'Senoro Gas Development Project',
-            org: 'Tripatra',
-            start: 1401721632,
-            end: 1420211232,
-            description:
-                'Represents the interface & coordination between construction, commissioning and operation group activities and includes all interface checks between all systems and subsystems in EPCC Senoro Gas Development Project with value more than 500 mio USD'),
-        new ProjectEntity(
-            title: 'Ruby Field Development',
-            org: 'PT Meido Elang Indah, TOTAL E&P Indonesie',
-            start: 1335971232,
-            end: 1351868832,
-            description:
-                'Ruby Tie In (RTI) project is part of Ruby Field Development operated by Pearl Oil Sebuku Limited (POSL). RTI will be executed by Total E&P Indonesie (TEPI) as Pearl Oil partner as well as operator for Senipah Facility. Gas maximum flowrate capacity from this block is 120 MMscfd.'),
+        // new ProjectEntity(
+        //     title: 'Senoro Gas Development Project',
+        //     org: 'Tripatra',
+        //     start: 1401721632,
+        //     end: 1420211232,
+        //     description:
+        //         'Represents the interface & coordination between construction, commissioning and operation group activities and includes all interface checks between all systems and subsystems in EPCC Senoro Gas Development Project with value more than 500 mio USD'),
+        // new ProjectEntity(
+        //     title: 'Ruby Field Development',
+        //     org: 'PT Meido Elang Indah, TOTAL E&P Indonesie',
+        //     start: 1335971232,
+        //     end: 1351868832,
+        //     description:
+        //         'Ruby Tie In (RTI) project is part of Ruby Field Development operated by Pearl Oil Sebuku Limited (POSL). RTI will be executed by Total E&P Indonesie (TEPI) as Pearl Oil partner as well as operator for Senipah Facility. Gas maximum flowrate capacity from this block is 120 MMscfd.'),
       ],
       certifications: [
         new CertificationEntity(
@@ -150,7 +149,6 @@ class WebClient implements ProfileRepository, CompanyRepository {
   Future deleteExperience(String profileId, int expId) =>
       Future.delayed(delay, () => this.david.experiences.removeWhere((element) => element.id == expId));
 
-
   @override
   Future<List<CompanyProjectEntity>> loadProjects() => Future.delayed(delay, () => this.mucoindoProjects);
 
@@ -164,11 +162,12 @@ class WebClient implements ProfileRepository, CompanyRepository {
   List<ProjectWorkerEntity> loadProjectWorkers() => tangguhWorkers;
 
   @override
-  addWorker(ProjectWorkerEntity entity) {
-    tangguhWorkers.removeWhere((element) => element.email == entity.email);
-    tangguhWorkers.add(entity);
-  }
+  addWorker(ProjectWorkerEntity entity) => tangguhWorkers
+    ..removeWhere((element) => element.email == entity.email)
+    ..add(entity);
 
-
-
+  @override
+  addProject(ProjectEntity entity) => david.projects
+    ..removeWhere((element) => element.id == entity.id)
+    ..add(entity);
 }

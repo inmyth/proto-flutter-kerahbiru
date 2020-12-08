@@ -10,5 +10,6 @@ abstract class ProfileRepository{
 
   Future deleteExperience(String profileId, int expId);
 
+  addProject(ProjectEntity entity);
 
 }

@@ -120,6 +120,7 @@ class Project extends CommonItem {
 
   static Project fromEntity(ProjectEntity entity) {
     return Project(
+        id: entity.id,
         title: entity.title,
         org: entity.org,
         start: new DateTime.fromMillisecondsSinceEpoch(entity.start * 1000),
